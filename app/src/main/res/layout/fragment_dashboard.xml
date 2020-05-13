@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#222">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_type1"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:textColor="#999"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="Environment" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textSize="50dp"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Good!" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:backgroundTint="#333"
+        android:textSize="15dp"
+        android:textColor="#fff"
+        android:padding="3dp"
+        android:background="@drawable/bt_type1"
+        android:text="  Current State  " />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_type1"
+        android:layout_margin="15dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bt_type1"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/txt_hum"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:text="0 %"
+                    android:textColor="#fff"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|top"
+                    android:text="Humidity"
+                    android:textColor="#999" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bt_type1"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:text="0 ppm"
+                    android:textColor="#fff"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|top"
+                    android:text="Co2 Concentration"
+                    android:textColor="#999" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bt_type1"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/txt_tem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:text="0°C"
+                    android:textColor="#fff"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|top"
+                    android:text="Temperature"
+                    android:textColor="#999" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bt_type1"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|bottom"
+                    android:text="0 lux"
+                    android:textColor="#fff"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|top"
+                    android:text="Illumination"
+                    android:textColor="#999" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#333"
+        android:textSize="15dp"
+        android:textColor="#fff"
+        android:padding="3dp"
+        android:background="@drawable/bt_type1"
+        android:text="  Mode Control  " />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/backbt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bt_type2"
+            android:backgroundTint="#f00"
+            android:text="Back" />
+
+        <Button
+            android:id="@+id/nextbt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/bt_type2"
+            android:backgroundTint="#00f"
+            android:text="Next" />
+    </LinearLayout>
+
+</LinearLayout>

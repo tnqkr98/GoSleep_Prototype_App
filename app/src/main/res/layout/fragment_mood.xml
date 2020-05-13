@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#222"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:backgroundTint="#555"
+        android:textSize="15dp"
+        android:textColor="#fff"
+        android:padding="3dp"
+        android:background="@drawable/bt_type1"
+        android:text="    Pick LED Color    " />
+
+    <com.larswerkman.holocolorpicker.ColorPicker
+        android:id="@+id/picker"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="360dp" />
+
+    <com.larswerkman.holocolorpicker.SVBar
+        android:id="@+id/svbar"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="15dp"
+        android:backgroundTint="#555"
+        android:textSize="15dp"
+        android:textColor="#fff"
+        android:padding="3dp"
+        android:background="@drawable/bt_type1"
+        android:text="    Brightness    " />
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:text="Ligth ON/OFF" />
+
+</LinearLayout>

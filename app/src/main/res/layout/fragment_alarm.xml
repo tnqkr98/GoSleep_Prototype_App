@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#222"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:backgroundTint="#555"
+        android:textSize="15dp"
+        android:textColor="#fff"
+        android:padding="3dp"
+        android:background="@drawable/bt_type1"
+        android:text="  Alarm Setting  " />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_type1"
+        android:layout_margin="10dp"
+        android:padding="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:text="Month"
+            android:textColor="#fff"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:ems="5"
+            android:maxLength="2"
+            android:gravity="center"
+            android:hint="0"
+            android:inputType="numberDecimal"
+            android:textColorHint="#666"
+            android:textSize="25dp" />
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Day"
+            android:textColor="#fff"
+            android:textSize="20dp" />
+
+        <EditText
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:ems="5"
+            android:maxLength="2"
+            android:gravity="center"
+            android:hint="00"
+            android:inputType="numberDecimal"
+            android:textColorHint="#666"
+            android:textSize="25dp" />
+
+        <EditText
+            android:id="@+id/hour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:hint="00"
+            android:textColorHint="#666"
+            android:gravity="center"
+            android:textSize="25dp"
+            android:maxLength="2"
+            android:ems="5"
+            android:inputType="numberDecimal" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textColor="#000"
+            android:textSize="25dp"
+            android:text="  :  " />
+
+        <EditText
+            android:id="@+id/min"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="50dp"
+            android:layout_weight="1"
+            android:ems="5"
+            android:gravity="center"
+            android:maxLength="2"
+            android:hint="00"
+            android:inputType="number"
+            android:textColorHint="#666"
+            android:textSize="25dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/setbt"
+        android:background="@drawable/bt_type2"
+        android:backgroundTint="#333"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set" />
+
+    <TextView
+        android:id="@+id/lastset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="18dp"
+        android:text="Set Time :" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/bt_type1"
+        android:backgroundTint="#555"
+        android:padding="3dp"
+        android:text="  Fan Speed  "
+        android:textColor="#fff"
+        android:textSize="15dp" />
+
+    <RadioGroup
+        android:id="@+id/rg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Very Low" />
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Low" />
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Middle" />
+
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="High" />
+
+        <RadioButton
+            android:id="@+id/radioButton5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Very High" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bt_type1"
+        android:backgroundTint="#555"
+        android:padding="3dp"
+        android:text="  Developer Setting  "
+        android:textColor="#fff"
+        android:textSize="15dp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bt_type1"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="  Fan Speed (1~255) : "
+                android:textSize="15dp" />
+
+            <EditText
+                android:id="@+id/fan_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="2"
+                android:gravity="center"
+                android:hint="0"
+                android:inputType="numberDecimal"
+                android:textColorHint="#666"
+                android:textSize="25dp" />
+
+            <Button
+                android:id="@+id/bt_fanset"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/bt_type2"
+                android:backgroundTint="#333"
+                android:text="Set" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="  Valve Control (ON/OFF) : "
+                android:textSize="15dp" />
+
+            <Switch
+                android:id="@+id/velve_switch"
+                android:layout_marginRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="20dp"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="  Fan Control (ON/OFF) : "
+                android:textSize="15dp" />
+
+            <Switch
+                android:id="@+id/fan_switch"
+                android:layout_marginRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
