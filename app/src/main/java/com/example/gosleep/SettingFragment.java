@@ -28,19 +28,17 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SettingFragment extends Fragment {
     View view;
-    Button setButton,fanButton;
+    Button setButton;
     RadioGroup radioGroup;
     RadioButton r1,r2,r3,r4,r5;
-    Switch velveSwit,fanSwit;
     TextView lastSetTime;
 
     boolean badInput = false;
 
-    EditText eHour,eMin,eDay,eMonth,eFan;
+    EditText eHour,eMin,eDay,eMonth;
     int month,day,hour,min;
     String mMonth,mDay,mHour,mMin;
     DateFormat dateFormat;
-    RadioGroup.OnCheckedChangeListener radioGroupButtonChangeListener;
     RadioButton.OnClickListener radioButtonClickListener;
     SharedPreferences.Editor editor;
     public final String PREFERENCE = "com.example.gosleep";
@@ -65,9 +63,6 @@ public class SettingFragment extends Fragment {
         eMin = (EditText)view.findViewById(R.id.min);
         eDay = (EditText)view.findViewById(R.id.day);
         eMonth = (EditText)view.findViewById(R.id.month);
-        eFan = (EditText)view.findViewById(R.id.fan_speed);
-
-        //radioGroup = (RadioGroup)view.findViewById(R.id.rg);
 
         radioButtonClickListener = new View.OnClickListener() {
             @Override
@@ -75,23 +70,23 @@ public class SettingFragment extends Fragment {
                     switch(view.getId()){
                         case R.id.radioButton:
                             ((GoSleepActivity) getActivity()).bt.send("fs0" + 51, true);
-                            eFan.setText(""+51);
+                            //eFan.setText(""+51);
                             break;
                         case R.id.radioButton2:
                             ((GoSleepActivity) getActivity()).bt.send("fs" + 102, true);
-                            eFan.setText(""+102);
+                            //eFan.setText(""+102);
                             break;
                         case R.id.radioButton3:
                             ((GoSleepActivity) getActivity()).bt.send("fs" + 153, true);
-                            eFan.setText(""+153);
+                            //eFan.setText(""+153);
                             break;
                         case R.id.radioButton4:
                             ((GoSleepActivity) getActivity()).bt.send("fs" + 204, true);
-                            eFan.setText(""+204);
+                            //eFan.setText(""+204);
                             break;
                         case R.id.radioButton5:
                             ((GoSleepActivity) getActivity()).bt.send("fs" + 255, true);
-                            eFan.setText(""+255);
+                            //eFan.setText(""+255);
                             break;
                     }
             }
@@ -120,7 +115,7 @@ public class SettingFragment extends Fragment {
         eMin.setText(dateNow.getMinutes()+"");
         eDay.setText(dateNow.getDate()+"");
         eMonth.setText(dateNow.getMonth()+1+"");
-        eFan.setText(""+0);
+        //eFan.setText(""+0);
 
         setButton = (Button)view.findViewById(R.id.setbt);
         setButton.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +130,6 @@ public class SettingFragment extends Fragment {
                     badInput = true;
                 else
                     badInput = false;
-
 
                 if(hour < 10)
                     mHour = "0"+hour;
@@ -177,43 +171,6 @@ public class SettingFragment extends Fragment {
                 }catch (ParseException e) {
                     e.printStackTrace();
                 }
-            }
-        });
-
-        fanButton = (Button)view.findViewById(R.id.bt_fanset);
-        fanButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int speed = Integer.parseInt(eFan.getText().toString());
-                if(speed<10)
-                    ((GoSleepActivity) getActivity()).bt.send("fs00" + speed, true);
-                else if(speed >=10 && speed <100)
-                    ((GoSleepActivity) getActivity()).bt.send("fs0" + speed, true);
-                else
-                    ((GoSleepActivity) getActivity()).bt.send("fs" + speed, true);
-            }
-        });
-
-        velveSwit = (Switch)view.findViewById(R.id.velve_switch);
-        velveSwit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    ((GoSleepActivity) getActivity()).bt.send("v1", true);
-                else
-                    ((GoSleepActivity) getActivity()).bt.send("v0", true);
-            }
-        });
-
-        fanSwit = (Switch)view.findViewById(R.id.fan_switch);
-        fanSwit.setChecked(true);
-        fanSwit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    ((GoSleepActivity)getActivity()).bt.send("f1", true);
-                else
-                    ((GoSleepActivity)getActivity()).bt.send("f0", true);
             }
         });
         return view;

@@ -41,7 +41,7 @@ public class GoSleepActivity extends AppCompatActivity {
     DashBoardFragment dashBoardFragment;
     static final int MODE_2 = 2, MODE_3 = 3, MODE_4 = 4, MODE_5 = 5, MODE_6 = 6;
     public int current_mode = 2;
-    public String tem = "0 °C", hum = "0 %";
+    public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
 
     private BottomNavigationView navigation;
@@ -61,6 +61,9 @@ public class GoSleepActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_alarm:
                     viewPager.setCurrentItem(2);
+                    return true;
+                case R.id.navigation_developer:
+                    viewPager.setCurrentItem(3);
                     return true;
             }
             return false;
@@ -82,6 +85,7 @@ public class GoSleepActivity extends AppCompatActivity {
         adapter.AddFragment(dashBoardFragment,"dash");
         adapter.AddFragment(new MoodFragment(),"mood");
         adapter.AddFragment(new SettingFragment(),"setting");
+        adapter.AddFragment(new DeveloperFragment(),"develop");
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -118,8 +122,12 @@ public class GoSleepActivity extends AppCompatActivity {
                 String[] array = message.split(",");
                 hum = array[0].concat(" %");
                 tem = array[1].concat(" °C");
-                current_mode = Integer.parseInt(array[2]);
-                Log.d("dddd","분석 >> 습도 : "+hum+"   온도 :"+tem+"   현재 고슬립 모드 :"+current_mode);
+                fanspeed = array[2];
+                // 조도, co2 농도 받기.
+
+                current_mode = Integer.parseInt(array[3]);
+
+                Log.d("dddd","분석 >> 습도 : "+hum+" 온도 :"+tem+ "  팬 속도 : "+fanspeed+"  현재 고슬립 모드 :"+current_mode);
             }
         });
 

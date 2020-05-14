@@ -13,4 +13,9 @@
         android:id="@+id/navigation_alarm"
         android:icon="@android:drawable/ic_menu_info_details"
         android:title="Setting" />
+    <item
+        android:id="@+id/navigation_developer"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="Developer"
+        android:visible="true" />
 </menu>

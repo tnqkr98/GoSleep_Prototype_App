@@ -89,9 +89,9 @@ public class DashBoardFragment extends Fragment {
                     Log.d("dddd","ack!!");
                     try {
                         ((GoSleepActivity) getActivity()).bt.send("a", true);
+                        // 일종의 ack. 아두이노에서는 이것을 5초이상 못받으면 통신이 끊긴것으로 간주.(블루투스 송수신 거리초과로 인한 예외처리)
                     }catch (Exception e){}
                     Thread.sleep(1000);
-                    // 일종의 ack. 아두이노에서는 이것을 5초이상 못받으면 통신이 끊긴것으로 간주.(블루투스 송수신 거리초과로 인한 예외처리)
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
