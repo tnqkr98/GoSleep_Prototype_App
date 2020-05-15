@@ -34,9 +34,10 @@ public class GoSleepActivity extends AppCompatActivity {
     BluetoothSPP bt;
     BluetoothAdapter mBluetoothAdapter;
     Set<BluetoothDevice> mPairedDevices;
-    String goSleepMacAddress;
+    String goSleepMacAddress = null;
     Boolean current_pairing_state = false, task_doing = false;
     Intent goSleepIntent;
+    static final String GOSLEEP_DEVICE_ID = "gosleep";
 
     DashBoardFragment dashBoardFragment;
     static final int MODE_2 = 2, MODE_3 = 3, MODE_4 = 4, MODE_5 = 5, MODE_6 = 6;
@@ -142,6 +143,7 @@ public class GoSleepActivity extends AppCompatActivity {
             @Override
             public void onDeviceDisconnected() {
                 current_pairing_state = false;
+                goSleepMacAddress = null;
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
                 if(!task_doing) {
                     try {    // 앱종료 시 처리
@@ -156,6 +158,7 @@ public class GoSleepActivity extends AppCompatActivity {
             @Override
             public void onDeviceConnectionFailed() {
                 current_pairing_state = false;
+                goSleepMacAddress = null;
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
                 if(!task_doing) {
                     ProgressTask task = new ProgressTask();
@@ -294,9 +297,10 @@ public class GoSleepActivity extends AppCompatActivity {
         mPairedDevices = mBluetoothAdapter.getBondedDevices();
 
         ProgressTask task = new ProgressTask();
-        for (BluetoothDevice device : mPairedDevices)
-            if(device.getName().equals("dharduino"))     // 여기서 모든 고슬립 디바이스명을 지정해야함.
+        for (BluetoothDevice device : mPairedDevices) {
+            if (device.getName().equals(GOSLEEP_DEVICE_ID))     // 여기서 모든 고슬립 디바이스명을 지정해야함.
                 goSleepMacAddress = device.getAddress();
+        }
         task.execute();
     }
 
@@ -315,10 +319,18 @@ public class GoSleepActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                for (int i = 0; i < 500; i++) {
-                    if(!current_pairing_state) {
+                for (int i = 0; i < 500; i++) {     // 500 초.
+                    if(!current_pairing_state && goSleepMacAddress != null) {
                         bt.connect(goSleepMacAddress);   // 여기서 연결.
                         task_doing = true;
+                        Thread.sleep(1000);
+                    }
+                    else if(goSleepMacAddress == null){   // 디바이스 찾을 때 까지 반복
+                        for (BluetoothDevice device : mPairedDevices) {
+                            if (device.getName().equals(GOSLEEP_DEVICE_ID))
+                                goSleepMacAddress = device.getAddress();
+                        }
+                        task_doing = false;
                         Thread.sleep(1000);
                     }
                     else {

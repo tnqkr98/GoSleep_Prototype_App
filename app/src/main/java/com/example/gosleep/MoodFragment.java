@@ -49,11 +49,10 @@ public class MoodFragment extends Fragment {
             @Override
             public void onColorChanged(int color) {
                 int argb = picker.getColor();
-                Log.d("dddd","drag~~~~~~");
                 if(isLEDon) {   // 한번에 많은 터치 인식 이슈 해결 필요
                     ((GoSleepActivity) getActivity()).bt.send("lp" + threeChar(getRed(argb)) + threeChar(getGreen(argb)) + threeChar(getBlue(argb)), true);
                     try {
-                        Thread.sleep(50); //동작이 너무 빠르면 아두이노 통신 상 큐에 너무쌓여서 출력 딜레이발생.
+                        Thread.sleep(30); //동작이 너무 빠르면 아두이노 통신 상 큐에 너무쌓여서 출력 딜레이발생.
                     }catch (Exception e){}
                 }
             }
@@ -63,19 +62,21 @@ public class MoodFragment extends Fragment {
         brightness = (SeekBar)view.findViewById(R.id.seekBar);
         brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) { }
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {}
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) { }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(isLEDon) {   // 한번에 많은 터치 인식 이슈 해결 필요
-                    //seekBar.getProgress();
-                    ((GoSleepActivity) getActivity()).bt.send("lb", true);
-                    try {
-                        Thread.sleep(50);
-                    }catch (Exception e){}
+                if(isLEDon || ((GoSleepActivity) getActivity()).current_mode <= 3) {
+                    int data = seekBar.getProgress();
+                    if(data >=100)
+                        ((GoSleepActivity) getActivity()).bt.send("lb"+data, true);
+                    else if(data>=10)
+                        ((GoSleepActivity) getActivity()).bt.send("lb0"+data, true);
+                    else
+                        ((GoSleepActivity) getActivity()).bt.send("lb00"+data, true);
                 }
             }
         });
@@ -85,13 +86,17 @@ public class MoodFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 int argb = picker.getColor();
                 if(b) {
-                    isLEDon = true;
                     Log.d("dddd","ledset :"+threeChar(getRed(argb))+threeChar(getGreen(argb))+threeChar(getBlue(argb)));
-                    ((GoSleepActivity) getActivity()).bt.send("lp"+threeChar(getRed(argb))+threeChar(getGreen(argb))+threeChar(getBlue(argb)),true);
+                    if(((GoSleepActivity) getActivity()).current_mode <= 3) {
+                        ((GoSleepActivity) getActivity()).bt.send("lp" + threeChar(getRed(argb)) + threeChar(getGreen(argb)) + threeChar(getBlue(argb)), true);
+                        isLEDon = true;
+                    }
                 }
                 else {
-                    ((GoSleepActivity) getActivity()).bt.send("le",true);
-                    isLEDon = false;
+                    if(((GoSleepActivity) getActivity()).current_mode <= 3) {
+                        ((GoSleepActivity) getActivity()).bt.send("le", true);
+                        isLEDon = false;
+                    }
                 }
             }
         });
@@ -102,11 +107,8 @@ public class MoodFragment extends Fragment {
     int getGreen(int argb){ return (argb>>8)&0xFF; }
     int getBlue(int argb){ return argb&0xFF; }
     String threeChar(int val){
-        if(val >=100)
-            return val+"";
-        else if(val >=10)
-            return "0"+val;
-        else
-            return "00"+val;
+        if(val >=100) return val+"";
+        else if(val >=10) return "0"+val;
+        else return "00"+val;
     }
 }
