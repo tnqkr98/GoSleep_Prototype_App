@@ -187,7 +187,7 @@ public class GoSleepActivity extends AppCompatActivity {
             bt.send("c",true);
             bt.stopService();
         }
-        Log.d("dddd","onDestroy");
+        //Log.d("dddd","onDestroy");
         arduinoDataRecievOn = false;
         Toast.makeText(getApplicationContext(),"GoSleep : 기기와의 연동을 중단합니다.",Toast.LENGTH_SHORT).show();
         stopService(goSleepIntent);
@@ -270,10 +270,7 @@ public class GoSleepActivity extends AppCompatActivity {
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
+            public void onClick(DialogInterface dialogInterface, int i) { }});
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
