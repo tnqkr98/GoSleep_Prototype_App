@@ -3,6 +3,7 @@ package com.example.gosleep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
@@ -41,9 +42,10 @@ public class GoSleepActivity extends AppCompatActivity {
 
     DashBoardFragment dashBoardFragment;
     static final int MODE_2 = 2, MODE_3 = 3, MODE_4 = 4, MODE_5 = 5, MODE_6 = 6;
-    public int current_mode = 2;
+    public int current_mode = 2, moduleControlCMD =0;
     public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
+    public boolean velveOn = false, heatOn = false, fanOn = false;
 
     private BottomNavigationView navigation;
     private ViewPager viewPager;
@@ -83,10 +85,13 @@ public class GoSleepActivity extends AppCompatActivity {
 
         dashBoardFragment = new DashBoardFragment();
         adapter = new GoSleepViewPagerAdapter(getSupportFragmentManager());
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
         adapter.AddFragment(dashBoardFragment,"dash");
         adapter.AddFragment(new MoodFragment(),"mood");
         adapter.AddFragment(new SettingFragment(),"setting");
         adapter.AddFragment(new DeveloperFragment(),"develop");
+        fragmentTransaction.commit();
         viewPager.setAdapter(adapter);
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -121,14 +126,30 @@ public class GoSleepActivity extends AppCompatActivity {
                 arduinoDataRecievOn = true;
                 Log.d("dddd", "Receiving Data From Arduino : "+message);
                 String[] array = message.split(",");
-                hum = array[0].concat(" %");
-                tem = array[1].concat(" °C");
-                fanspeed = array[2];
-                // 조도, co2 농도 받기.
+                if(array[0].equals("v")){           // 밸브 상황 비동기 수신
+                    if(array[1].equals("1"))  velveOn = true;
+                    else  velveOn = false;
+                    moduleControlCMD++;
+                }
+                else if(array[0].equals("f")){           // 팬 상황 비동기 수신
+                    if(array[1].equals("1")) fanOn = true;
+                    else fanOn = false;
+                    moduleControlCMD++;
+                }
+                else if(array[0].equals("h")){           // 열선 상황 비동기 수신
+                    if(array[1].equals("1")) heatOn = true;
+                    else heatOn = false;
+                    moduleControlCMD++;
+                }
+                else {
+                    hum = array[0].concat(" %");
+                    tem = array[1].concat(" °C");
+                    fanspeed = array[2];
+                    // 조도, co2 농도 받기.  // on/off 상태 수신메시지 추가.
 
-                current_mode = Integer.parseInt(array[3]);
-
-                Log.d("dddd","분석 >> 습도 : "+hum+" 온도 :"+tem+ "  팬 속도 : "+fanspeed+"  현재 고슬립 모드 :"+current_mode);
+                    current_mode = Integer.parseInt(array[3]);
+                    Log.d("dddd", "분석 >> 습도 : " + hum + " 온도 :" + tem + "  팬 속도 : " + fanspeed + "  현재 고슬립 모드 :" + current_mode);
+                }
             }
         });
 
@@ -201,6 +222,7 @@ public class GoSleepActivity extends AppCompatActivity {
     @Override
     protected void onStart() {   // 호출시점 : 뒤로가기 앱 종료 후 다시 실행시 onCreate 가 아닌 이것이 호출. (아두이노와의 연결 다시 수행해야함)
         super.onStart();
+        Log.d("dddd","onStart call");
         if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);   // 블루투스를 사용할지 묻자
             startActivityForResult(intent,BluetoothState.REQUEST_ENABLE_BT);
@@ -216,6 +238,7 @@ public class GoSleepActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        Log.d("dddd","onResume call");
         if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);   // 블루투스를 사용할지 묻자
             startActivityForResult(intent,BluetoothState.REQUEST_ENABLE_BT);

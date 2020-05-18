@@ -71,7 +71,6 @@ public class DeveloperFragment extends Fragment {
         });
 
         fanSwit = (Switch)view.findViewById(R.id.fan_switch);
-        fanSwit.setChecked(true);
         fanSwit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -110,6 +109,16 @@ public class DeveloperFragment extends Fragment {
                         //tem.setText(((GoSleepActivity) getActivity()).tem);
                         //hum.setText(((GoSleepActivity) getActivity()).hum);
                         fanSpeed.setText(((GoSleepActivity) getActivity()).fanspeed);
+
+                        if (((GoSleepActivity)getActivity()).moduleControlCMD > 0) {
+                            if(((GoSleepActivity)getActivity()).fanOn) fanSwit.setChecked(true);
+                            else fanSwit.setChecked(false);
+                            if(((GoSleepActivity)getActivity()).heatOn) heatSwit.setChecked(true);
+                            else heatSwit.setChecked(false);
+                            if(((GoSleepActivity)getActivity()).velveOn) velveSwit.setChecked(true);
+                            else velveSwit.setChecked(false);
+                            ((GoSleepActivity)getActivity()).moduleControlCMD--;
+                        }
                     }
                 }catch (Exception e){}
 
@@ -129,7 +138,7 @@ public class DeveloperFragment extends Fragment {
                 }catch(Exception e){}
 
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(100);
                 }catch (InterruptedException e){
                     e.printStackTrace();
                 }
