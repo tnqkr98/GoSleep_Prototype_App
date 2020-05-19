@@ -80,12 +80,11 @@ public class MoodFragment extends Fragment {
                 }
             }
         });
-
-        lightonoff.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        lightonoff.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onClick(View v) {
                 int argb = picker.getColor();
-                if(b) {
+                if(lightonoff.isChecked()) {
                     Log.d("dddd","ledset :"+threeChar(getRed(argb))+threeChar(getGreen(argb))+threeChar(getBlue(argb)));
                     if(((GoSleepActivity) getActivity()).current_mode <= 3) {
                         ((GoSleepActivity) getActivity()).bt.send("lp" + threeChar(getRed(argb)) + threeChar(getGreen(argb)) + threeChar(getBlue(argb)), true);
@@ -100,6 +99,7 @@ public class MoodFragment extends Fragment {
                 }
             }
         });
+
         return view;
     }
 

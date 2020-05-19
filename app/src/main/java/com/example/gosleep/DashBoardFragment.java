@@ -18,7 +18,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 public class DashBoardFragment extends Fragment {
-    TextView tem, hum;
+    TextView tem, hum, mode;
     private static Handler mHandler;
     Bundle receivbundle;
     View view;
@@ -39,6 +39,8 @@ public class DashBoardFragment extends Fragment {
 
         tem = (TextView)view.findViewById(R.id.txt_tem);
         hum = (TextView)view.findViewById(R.id.txt_hum);
+        mode = (TextView)view.findViewById(R.id.mode_txt);
+
         back = (Button)view.findViewById(R.id.backbt);
         next = (Button)view.findViewById(R.id.nextbt);
 
@@ -50,13 +52,18 @@ public class DashBoardFragment extends Fragment {
                     if (msg.what == 0) {
                         tem.setText(((GoSleepActivity) getActivity()).tem);
                         hum.setText(((GoSleepActivity) getActivity()).hum);
+                        switch (((GoSleepActivity) getActivity()).current_mode){
+                            case 1: mode.setText("Current Mode :  Mode");break;
+                            case 2: mode.setText("Current Mode : Waiting Mode");break;
+                            case 3: mode.setText("Current Mode : Waiting Mode");break;
+                            case 4: mode.setText("Current Mode : Waiting Mode");break;
+                            case 5: mode.setText("Current Mode : Waiting Mode");break;
+                            case 6: mode.setText("Current Mode : Waiting Mode");break;
+                        }
                     }
                 }catch (Exception e){}
-
-
             }
         };
-
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +105,6 @@ public class DashBoardFragment extends Fragment {
             }
         }
     }
-
 
     @Override
     public void onDestroyView() {

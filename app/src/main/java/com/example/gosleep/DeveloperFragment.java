@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -60,10 +61,10 @@ public class DeveloperFragment extends Fragment {
         });
 
         velveSwit = (Switch)view.findViewById(R.id.velve_switch);
-        velveSwit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        velveSwit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
+            public void onClick(View v) {
+                if(velveSwit.isChecked())
                     ((GoSleepActivity) getActivity()).bt.send("v1", true);
                 else
                     ((GoSleepActivity) getActivity()).bt.send("v0", true);
@@ -71,28 +72,28 @@ public class DeveloperFragment extends Fragment {
         });
 
         fanSwit = (Switch)view.findViewById(R.id.fan_switch);
-        fanSwit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        fanSwit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(b)
-                    ((GoSleepActivity)getActivity()).bt.send("f1", true);
+            public void onClick(View v) {
+                if(fanSwit.isChecked())
+                    ((GoSleepActivity) getActivity()).bt.send("f1", true);
                 else
-                    ((GoSleepActivity)getActivity()).bt.send("f0", true);
+                    ((GoSleepActivity) getActivity()).bt.send("f0", true);
             }
         });
 
         heatSwit = (Switch)view.findViewById(R.id.heat_switch);
-        heatSwit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        heatSwit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+            public void onClick(View v) {
+                if(heatSwit.isChecked())
                     ((GoSleepActivity)getActivity()).bt.send("h1", true);
                 else
                     ((GoSleepActivity)getActivity()).bt.send("h0", true);
             }
         });
 
-        zpButton = (Button)view.findViewById(R.id.zpbutton);
+        zpButton = (Button) view.findViewById(R.id.zpbutton);
         zpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
