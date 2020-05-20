@@ -45,7 +45,7 @@ public class GoSleepActivity extends AppCompatActivity {
     public int current_mode = 2, moduleControlCMD =0;
     public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
-    public boolean velveOn = false, heatOn = false, fanOn = false;
+    public boolean velveOn = false, heatOn = false, fanOn = false, moodLEDon = false;
 
     private BottomNavigationView navigation;
     private ViewPager viewPager;
@@ -145,6 +145,8 @@ public class GoSleepActivity extends AppCompatActivity {
                     hum = array[0].concat(" %");
                     tem = array[1].concat(" °C");
                     fanspeed = array[2];
+                    co2 = array[4].concat(" ppm");
+                    dist = array[5].concat(" cm");
                     // 조도, co2 농도 받기.  // on/off 상태 수신메시지 추가.
 
                     current_mode = Integer.parseInt(array[3]);
@@ -350,6 +352,7 @@ public class GoSleepActivity extends AppCompatActivity {
                     }
                     else if(goSleepMacAddress == null){   // 디바이스 찾을 때 까지 반복
                         for (BluetoothDevice device : mPairedDevices) {
+                            Log.d("dddd",device.getName()+"");
                             if (device.getName().equals(GOSLEEP_DEVICE_ID))
                                 goSleepMacAddress = device.getAddress();
                         }

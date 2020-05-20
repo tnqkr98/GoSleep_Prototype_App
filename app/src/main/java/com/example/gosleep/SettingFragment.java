@@ -28,7 +28,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class SettingFragment extends Fragment {
     View view;
-    Button setButton;
+    Button setButton, resetButton;
     RadioGroup radioGroup;
     RadioButton r1,r2,r3,r4,r5;
     TextView lastSetTime;
@@ -57,7 +57,7 @@ public class SettingFragment extends Fragment {
         pref = getActivity().getSharedPreferences(PREFERENCE,MODE_PRIVATE);
         editor = pref.edit();
         lastSetTime = (TextView)view.findViewById(R.id.lastset);
-        lastSetTime.setText(pref.getString("savedAlarm","Last Set Time : "));
+        lastSetTime.setText(pref.getString("savedAlarm","Last Set Time : None"));
 
         eHour = (EditText)view.findViewById(R.id.hour);
         eMin = (EditText)view.findViewById(R.id.min);
@@ -168,6 +168,18 @@ public class SettingFragment extends Fragment {
                 }
             }
         });
+        resetButton = (Button)view.findViewById(R.id.resetbt);
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GoSleepActivity) getActivity()).bt.send("tr",true);
+                editor.putString("savedAlarm","Last Set Time : None");
+                lastSetTime.setText("Last Set Time : None");
+                Toast.makeText(view.getContext(),"알람이 해제 되었습니다.",Toast.LENGTH_SHORT).show();
+                editor.commit();
+            }
+        });
+
         return view;
     }
 }

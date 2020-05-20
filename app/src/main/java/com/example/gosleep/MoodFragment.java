@@ -29,8 +29,6 @@ public class MoodFragment extends Fragment {
     SeekBar brightness;
     ColorPicker picker;
 
-    Boolean isLEDon = false;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +47,7 @@ public class MoodFragment extends Fragment {
             @Override
             public void onColorChanged(int color) {
                 int argb = picker.getColor();
-                if(isLEDon) {   // 한번에 많은 터치 인식 이슈 해결 필요
+                if(((GoSleepActivity)getActivity()).moodLEDon) {   // 한번에 많은 터치 인식 이슈 해결 필요
                     ((GoSleepActivity) getActivity()).bt.send("lp" + threeChar(getRed(argb)) + threeChar(getGreen(argb)) + threeChar(getBlue(argb)), true);
                     try {
                         Thread.sleep(30); //동작이 너무 빠르면 아두이노 통신 상 큐에 너무쌓여서 출력 딜레이발생.
@@ -69,7 +67,7 @@ public class MoodFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(isLEDon || ((GoSleepActivity) getActivity()).current_mode <= 3) {
+                if(((GoSleepActivity)getActivity()).moodLEDon && ((GoSleepActivity) getActivity()).current_mode <= 3) {
                     int data = seekBar.getProgress();
                     if(data >=100)
                         ((GoSleepActivity) getActivity()).bt.send("lb"+data, true);
@@ -87,14 +85,14 @@ public class MoodFragment extends Fragment {
                 if(lightonoff.isChecked()) {
                     Log.d("dddd","ledset :"+threeChar(getRed(argb))+threeChar(getGreen(argb))+threeChar(getBlue(argb)));
                     if(((GoSleepActivity) getActivity()).current_mode <= 3) {
-                        ((GoSleepActivity) getActivity()).bt.send("lp" + threeChar(getRed(argb)) + threeChar(getGreen(argb)) + threeChar(getBlue(argb)), true);
-                        isLEDon = true;
+                        ((GoSleepActivity)getActivity()).bt.send("lp" + threeChar(getRed(argb)) + threeChar(getGreen(argb)) + threeChar(getBlue(argb)), true);
+                        ((GoSleepActivity)getActivity()).moodLEDon = true;
                     }
                 }
                 else {
                     if(((GoSleepActivity) getActivity()).current_mode <= 3) {
-                        ((GoSleepActivity) getActivity()).bt.send("le", true);
-                        isLEDon = false;
+                        ((GoSleepActivity)getActivity()).bt.send("le", true);
+                        ((GoSleepActivity)getActivity()).moodLEDon = false;
                     }
                 }
             }
