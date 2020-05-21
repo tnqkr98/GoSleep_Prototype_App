@@ -18,7 +18,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 public class DashBoardFragment extends Fragment {
-    TextView tem, hum, mode;
+    TextView tem, hum, mode,co2;
     private static Handler mHandler;
     Bundle receivbundle;
     View view;
@@ -39,6 +39,7 @@ public class DashBoardFragment extends Fragment {
 
         tem = (TextView)view.findViewById(R.id.txt_tem);
         hum = (TextView)view.findViewById(R.id.txt_hum);
+        co2 = (TextView)view.findViewById(R.id.co2);
         mode = (TextView)view.findViewById(R.id.mode_txt);
 
         back = (Button)view.findViewById(R.id.backbt);
@@ -51,17 +52,19 @@ public class DashBoardFragment extends Fragment {
                 try {
                     if (msg.what == 0) {
                         tem.setText(((GoSleepActivity) getActivity()).tem);
-        hum.setText(((GoSleepActivity) getActivity()).hum);
-        switch (((GoSleepActivity) getActivity()).current_mode){
-            case 2: mode.setText("Current Mode : Waiting Mode");break;
-            case 3: mode.setText("Current Mode : Distance Mode");break;
-            case 4: mode.setText("Current Mode : Sleep Mode");break;
-            case 5: mode.setText("Current Mode : Sensing Mode");break;
-            case 6: mode.setText("Current Mode : Alarm Mode");break;
-        }
-    }
-}catch (Exception e){}
-        }
+                        hum.setText(((GoSleepActivity) getActivity()).hum);
+                        co2.setText(((GoSleepActivity)getActivity()).co2);
+
+                        switch (((GoSleepActivity) getActivity()).current_mode){
+                            case 2: mode.setText("Current Mode : Waiting Mode");break;
+                            case 3: mode.setText("Current Mode : Distance Mode");break;
+                            case 4: mode.setText("Current Mode : Sleep Mode");break;
+                            case 5: mode.setText("Current Mode : Sensing Mode");break;
+                            case 6: mode.setText("Current Mode : Alarm Mode");break;
+                        }
+                     }
+                }catch (Exception e){}
+            }
         };
 
         back.setOnClickListener(new View.OnClickListener() {

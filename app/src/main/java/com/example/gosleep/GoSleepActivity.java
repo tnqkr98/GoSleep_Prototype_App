@@ -126,31 +126,32 @@ public class GoSleepActivity extends AppCompatActivity {
                 arduinoDataRecievOn = true;
                 Log.d("dddd", "Receiving Data From Arduino : "+message);
                 String[] array = message.split(",");
-                if(array[0].equals("v")){           // 밸브 상황 비동기 수신
-                    if(array[1].equals("1"))  velveOn = true;
-                    else  velveOn = false;
-                    moduleControlCMD++;
-                }
-                else if(array[0].equals("f")){           // 팬 상황 비동기 수신
-                    if(array[1].equals("1")) fanOn = true;
-                    else fanOn = false;
-                    moduleControlCMD++;
-                }
-                else if(array[0].equals("h")){           // 열선 상황 비동기 수신
-                    if(array[1].equals("1")) heatOn = true;
-                    else heatOn = false;
-                    moduleControlCMD++;
-                }
-                else {
-                    hum = array[0].concat(" %");
-                    tem = array[1].concat(" °C");
-                    fanspeed = array[2];
-                    co2 = array[4].concat(" ppm");
-                    dist = array[5].concat(" cm");
-                    // 조도, co2 농도 받기.  // on/off 상태 수신메시지 추가.
+                try {
+                    if (array[0].equals("v")) {           // 밸브 상황 비동기 수신
+                        if (array[1].equals("1")) velveOn = true;
+                        else velveOn = false;
+                        moduleControlCMD++;
+                    } else if (array[0].equals("f")) {           // 팬 상황 비동기 수신
+                        if (array[1].equals("1")) fanOn = true;
+                        else fanOn = false;
+                        moduleControlCMD++;
+                    } else if (array[0].equals("h")) {           // 열선 상황 비동기 수신
+                        if (array[1].equals("1")) heatOn = true;
+                        else heatOn = false;
+                        moduleControlCMD++;
+                    } else {
+                        hum = array[0].concat(" %");
+                        tem = array[1].concat(" °C");
+                        fanspeed = array[2];
+                        co2 = array[4].concat(" ppm");
+                        dist = array[5].concat(" cm");
+                        // 조도, co2 농도 받기.  // on/off 상태 수신메시지 추가.
 
-                    current_mode = Integer.parseInt(array[3]);
-                    Log.d("dddd", "분석 >> 습도 : " + hum + " 온도 :" + tem + "  팬 속도 : " + fanspeed + "  현재 고슬립 모드 :" + current_mode);
+                        current_mode = Integer.parseInt(array[3]);
+                        Log.d("dddd", "분석 >> 습도 : " + hum + " 온도 :" + tem + "  팬 속도 : " + fanspeed + "  현재 고슬립 모드 :" + current_mode);
+                    }
+                }catch (Exception e){
+                    Log.d("dddd",e.getMessage()+"아두이노 수신메시지 오류!!");
                 }
             }
         });

@@ -84,16 +84,20 @@ public class MoodFragment extends Fragment {
                 int argb = picker.getColor();
                 if(lightonoff.isChecked()) {
                     Log.d("dddd","ledset :"+threeChar(getRed(argb))+threeChar(getGreen(argb))+threeChar(getBlue(argb)));
-                    if(((GoSleepActivity) getActivity()).current_mode <= 3) {
+                    if(((GoSleepActivity) getActivity()).current_mode < 3) {
                         ((GoSleepActivity)getActivity()).bt.send("lp" + threeChar(getRed(argb)) + threeChar(getGreen(argb)) + threeChar(getBlue(argb)), true);
                         ((GoSleepActivity)getActivity()).moodLEDon = true;
                     }
+                    else
+                        Toast.makeText(view.getContext(),"대기모드에서만 동작합니다.",Toast.LENGTH_SHORT);
                 }
                 else {
-                    if(((GoSleepActivity) getActivity()).current_mode <= 3) {
+                    if(((GoSleepActivity) getActivity()).current_mode <3) {
                         ((GoSleepActivity)getActivity()).bt.send("le", true);
                         ((GoSleepActivity)getActivity()).moodLEDon = false;
                     }
+                    else
+                        Toast.makeText(view.getContext(),"대기모드에서만 동작합니다.",Toast.LENGTH_SHORT);
                 }
             }
         });
