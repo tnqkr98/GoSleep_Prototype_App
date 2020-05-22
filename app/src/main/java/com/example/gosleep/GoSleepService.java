@@ -9,14 +9,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
 public class GoSleepService extends Service {
-    public GoSleepService() { }
+    public GoSleepService() {Log.d("dddd","Service: construct"); }
 
     @Override
     public void onCreate() {
+        Log.d("dddd","Service: onCreate");
         super.onCreate();
     }
 
@@ -25,6 +27,7 @@ public class GoSleepService extends Service {
         Intent cIntent = new Intent(this, GoSleepActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, cIntent, 0);
 
+        Log.d("dddd","Service: onStartCommand");
         NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= 26){
             String CHANNEL_ID = "channel_id";
@@ -44,6 +47,13 @@ public class GoSleepService extends Service {
         //return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
+
+    @Override
+    public void onDestroy() {
+        Log.d("dddd","Service: onDestroy");
+        super.onDestroy();
+    }
+
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
