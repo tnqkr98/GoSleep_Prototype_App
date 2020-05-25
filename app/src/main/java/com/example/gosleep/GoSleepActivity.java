@@ -16,6 +16,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class GoSleepActivity extends AppCompatActivity {
     BluetoothAdapter mBluetoothAdapter;
     Set<BluetoothDevice> mPairedDevices;
     String goSleepMacAddress = null;
-    Boolean current_pairing_state = false, task_doing = false;
+    Boolean current_pairing_state = false, task_doing = false, pairingOn = false;
     Intent goSleepIntent;
     static final String GOSLEEP_DEVICE_ID = "gosleep";
 
@@ -47,7 +48,7 @@ public class GoSleepActivity extends AppCompatActivity {
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
     public boolean velveOn = false, heatOn = false, fanOn = false, moodLEDon = false;
 
-    private BottomNavigationView navigation;
+    private BottomNavigationView navigation;//
     private ViewPager viewPager;
     private GoSleepViewPagerAdapter adapter;
     private MenuItem prevMenuItem;
@@ -73,11 +74,17 @@ public class GoSleepActivity extends AppCompatActivity {
         }
     };
 
+    SharedPreferences.Editor editor;
+    SharedPreferences pref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gosleep);
         Log.d("dddd","Activity: onCreate");
+
+        pref = getSharedPreferences("com.example.gosleep",MODE_PRIVATE);
+        editor = pref.edit();
 
         //navigation view
         viewPager = (ViewPager)findViewById(R.id.viewpager);
@@ -140,17 +147,38 @@ public class GoSleepActivity extends AppCompatActivity {
                         if (array[1].equals("1")) heatOn = true;
                         else heatOn = false;
                         moduleControlCMD++;
-                    } else {
+                    } else if(array[0].equals("t")) {
+                        if(array[1].equals("n"))
+                            editor.putString("savedAlarm","Last Set Time : None");
+                        else {
+                            String s = "Last Set Time : "+array[1]+"월 "+array[2]+"일 "+array[3]+"시 "+array[4]+"분";
+                            Log.d("dddd","alarm receiv : "+s);
+                            editor.putString("savedAlarm", s);
+                        }
+                        editor.commit();
+                    }
+                    else {
                         hum = array[0].concat(" %");
                         tem = array[1].concat("°C");
                         fanspeed = array[2];
-                        if(array.length >4) {   // uno test
+                        if (array.length > 4) {   // uno test
                             co2 = array[4].concat(" ppm");
                             dist = array[5].concat(" cm");
                         }
                         // 조도 받기.
 
                         current_mode = Integer.parseInt(array[3]);
+
+                        // 쓰레드 없이 프레그먼트 조작
+                        MoodFragment mf = (MoodFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 1);
+                        if (current_mode > 2) {
+                            mf.lightonoff.setChecked(false);
+                            moodLEDon = false;
+                        } else if (current_mode == 6){
+                            mf.lightonoff.setChecked(true);
+                           moodLEDon = true;
+                        }
+
                         //Log.d("dddd", "분석 >> 습도 : " + hum + " 온도 :" + tem + "  팬 속도 : " + fanspeed + "  현재 고슬립 모드 :" + current_mode);
                     }
                 }catch (Exception e){
@@ -163,17 +191,23 @@ public class GoSleepActivity extends AppCompatActivity {
             @Override
             public void onDeviceConnected(String name, String address) {
                 Log.d("dddd","Activity: onDeviceConnected");
-                current_pairing_state = true;
-                startService(goSleepIntent);     // 포그라운드 서비스 시작.
+                pairingOn = true;
+                //current_pairing_state = true;
+                //startService(goSleepIntent);     // 포그라운드 서비스 시작.
+                //bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
                 Toast.makeText(getApplicationContext(),"Connected to " + name + "\n" + address, Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onDeviceDisconnected() {
                 Log.d("dddd","Activity: onDeviceDisconnected");
-                current_pairing_state = false;
-                goSleepMacAddress = null;
+                pairingOn = false;
+
+                //current_pairing_state = false;
+                //goSleepMacAddress = null;
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
+                //if(!task_doing)
+                //    newConnectGoSleep();
 
                 if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);   // 블루투스를 사용할지 묻자
@@ -182,44 +216,31 @@ public class GoSleepActivity extends AppCompatActivity {
                 else if(!bt.isServiceAvailable()){   // // 단말기 블루투스가 작동중, 서비스가 미작동 중이라면,
                     bt.setupService();
                     bt.startService(BluetoothState.DEVICE_OTHER);
-                    connectGoSleep();
+                    //connectGoSleep();
                 }
-                else{   // 위의 두 상황이 아니라 그냥 디바이스 탐색을 실패한 경우.
-                    if(!task_doing) {
-                        ProgressTask task = new ProgressTask();
-                        task.execute();
-                    }
-                }
+                else if(!task_doing)
+                    newConnectGoSleep();
             }
 
             @Override
             public void onDeviceConnectionFailed() {
                 Log.d("dddd","Activity: onDeviceConnectionFailed");
-                current_pairing_state = false;
+                pairingOn = false;
+                stopService(goSleepIntent); // 포그라운드 서비스 중단
+                if(!task_doing)
+                    newConnectGoSleep();
+                /*current_pairing_state = false;
                 goSleepMacAddress = null;
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
                 if(!task_doing) {
                     ProgressTask task = new ProgressTask();
                     task.execute();
                     Toast.makeText(getApplicationContext(), "Find GoSleep...", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
         ImageView btnConnect = (ImageView)findViewById(R.id.bluetooth);
-        /*btnConnect.setOnClickListener(new View.OnClickListener(){   // 버튼으로 수동 연결 설정 관련.
-            public void onClick(View v){
-                if(bt.getServiceState() == BluetoothState.STATE_CONNECTED){
-                    bt.send("c",true);
-                    bt.disconnect();
-                    arduinoDataRecievOn = false;
-                }
-                else{
-                    Intent intent = new Intent(getApplicationContext(), DeviceList.class);
-                    startActivityForResult(intent,BluetoothState.REQUEST_CONNECT_DEVICE);
-                }
-            }
-        });*/
     }
 
     public void onDestroy(){
@@ -240,7 +261,8 @@ public class GoSleepActivity extends AppCompatActivity {
     protected void onStart() {   // 호출시점 : 뒤로가기 앱 종료 후 다시 실행시 onCreate 가 아닌 이것이 호출. (아두이노와의 연결 다시 수행해야함)
         super.onStart();
         Log.d("dddd","Activity: onStart");
-        if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
+        newConnectGoSleep();
+        /*if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);   // 블루투스를 사용할지 묻자
             startActivityForResult(intent,BluetoothState.REQUEST_ENABLE_BT);
         }
@@ -250,16 +272,13 @@ public class GoSleepActivity extends AppCompatActivity {
                 bt.startService(BluetoothState.DEVICE_OTHER);
                 connectGoSleep();
             }
-        }
+        }*/
     }
 
     @Override
     protected void onResume() { Log.d("dddd","Activity: onResume");super.onResume();}
     @Override
-    protected void onPause() {
-        Log.d("dddd","Activity: onPause");
-        super.onPause();
-    }
+    protected void onPause() { Log.d("dddd","Activity: onPause");super.onPause(); }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -280,10 +299,13 @@ public class GoSleepActivity extends AppCompatActivity {
         }
         else if(requestCode == BluetoothState.REQUEST_ENABLE_BT){    //(블루투스 미작동 시) 블루투스 사용 여부를 묻는 인텐트의 응답
             if(resultCode == Activity.RESULT_OK){ // 인텐트 메시지에 OK 를 누른경우
-                connectGoSleep();
+                newConnectGoSleep();
+               // connectGoSleep();
+
                 /*bt.setupService();
                 bt.startService(BluetoothState.DEVICE_OTHER); // Arduino*/
-                arduinoDataRecievOn = true;
+
+                //arduinoDataRecievOn = true;
             }
             else{ //(블루투스 미작동 시) 인텐트 메시지에  NO 를 누른경우
                 Toast.makeText(getApplicationContext(), "GoSleep : Bluetooth was not enabled.", Toast.LENGTH_SHORT).show();
@@ -309,7 +331,61 @@ public class GoSleepActivity extends AppCompatActivity {
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-        //super.onBackPressed();
+    }
+
+    private void newConnectGoSleep(){
+        //Log.d("dddd","newConnectGosleep");
+        if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);   // 블루투스를 사용할지 묻자
+            startActivityForResult(intent,BluetoothState.REQUEST_ENABLE_BT);
+        }
+        else{  // 단말기 블루투스가 작동중인경우
+            if(!bt.isServiceAvailable()){   // 서비스가 미작동 중이라면,
+                bt.setupService();
+                bt.startService(BluetoothState.DEVICE_OTHER);
+                connectThread();
+            }
+            else
+                connectThread();
+        }
+    }
+    void connectThread(){
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        mPairedDevices = mBluetoothAdapter.getBondedDevices();
+
+        final ProgressDialog progressDialog = new ProgressDialog(GoSleepActivity.this);
+        progressDialog.setMessage("Find GoSleep....");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
+        Thread thread = new Thread(){
+            @Override
+            public void run() {
+                for(int i=0;i<500;i++){
+                    task_doing = true;
+                    Log.d("dddd","~~~~~~~~~~"+i);
+                    for (BluetoothDevice device : mPairedDevices) {
+                        if (device.getName().equals(GOSLEEP_DEVICE_ID)) {    // 여기서 모든 고슬립 디바이스명을 지정해야함.
+                            goSleepMacAddress = device.getAddress();
+                            if(goSleepMacAddress != null) {
+                                bt.connect(goSleepMacAddress);
+                                try { Thread.sleep(1500); } catch (Exception e) { }
+                            }
+                        }
+                    }
+                    if(pairingOn) {
+                        startService(goSleepIntent);     // 포그라운드 서비스 시작.
+                        bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
+                        progressDialog.dismiss();
+                        task_doing = false;
+                        break;
+                    }
+                    try { Thread.sleep(1500); } catch (Exception e) { }
+                }
+            }
+        };
+        thread.start();
     }
 
     private void connectGoSleep(){
@@ -324,7 +400,6 @@ public class GoSleepActivity extends AppCompatActivity {
 
         ProgressTask task = new ProgressTask();
         task.execute();
-
     }
 
     private class ProgressTask extends AsyncTask<Void,Void,Void> {
@@ -346,6 +421,7 @@ public class GoSleepActivity extends AppCompatActivity {
             Log.d("dddd","ProgressTask: doInBackground");
             try {
                 for (int i = 0; i < 500; i++) {     // 500 초.
+                    Log.d("dddd",task_doing+","+goSleepMacAddress+","+current_pairing_state);
                     if(!current_pairing_state && goSleepMacAddress != null) {
                         bt.connect(goSleepMacAddress);   // 여기서 연결.
                         task_doing = true;
@@ -353,11 +429,11 @@ public class GoSleepActivity extends AppCompatActivity {
                     }
                     else if(goSleepMacAddress == null){   // 디바이스 찾을 때 까지 반복
                         for (BluetoothDevice device : mPairedDevices) {
-                            Log.d("dddd",device.getName()+"");
+                            Log.d("dddd",i+"!"+device.getName()+"");
                             if (device.getName().equals(GOSLEEP_DEVICE_ID))
                                 goSleepMacAddress = device.getAddress();
                         }
-                        task_doing = false;
+                        task_doing = true;
                         Thread.sleep(1000);
                     }
                     else {

@@ -89,7 +89,7 @@ public class MoodFragment extends Fragment {
                         ((GoSleepActivity)getActivity()).moodLEDon = true;
                     }
                     else
-                        Toast.makeText(view.getContext(),"대기모드에서만 동작합니다.",Toast.LENGTH_SHORT);
+                        Toast.makeText(v.getContext(),"대기모드에서만 동작합니다.",Toast.LENGTH_SHORT);
                 }
                 else {
                     if(((GoSleepActivity) getActivity()).current_mode <3) {
@@ -97,7 +97,7 @@ public class MoodFragment extends Fragment {
                         ((GoSleepActivity)getActivity()).moodLEDon = false;
                     }
                     else
-                        Toast.makeText(view.getContext(),"대기모드에서만 동작합니다.",Toast.LENGTH_SHORT);
+                        Toast.makeText(v.getContext(),"대기모드에서만 동작합니다.",Toast.LENGTH_SHORT);
                 }
             }
         });

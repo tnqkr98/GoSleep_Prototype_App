@@ -1,6 +1,5 @@
 package com.example.gosleep;
 
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -44,8 +43,8 @@ public class GoSleepService extends Service {
                 .setContentIntent(pendingIntent);
         startForeground(1,builder.build());
 
-        //return super.onStartCommand(intent, flags, startId);
-        return START_STICKY;
+        return super.onStartCommand(intent, flags, startId);
+        //return START_STICKY;
     }
 
     @Override

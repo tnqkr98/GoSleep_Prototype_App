@@ -40,8 +40,8 @@ public class SettingFragment extends Fragment {
     String mMonth,mDay,mHour,mMin;
     DateFormat dateFormat;
     RadioButton.OnClickListener radioButtonClickListener;
+
     SharedPreferences.Editor editor;
-    public final String PREFERENCE = "com.example.gosleep";
     SharedPreferences pref;
 
     @Override
@@ -54,7 +54,7 @@ public class SettingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_alarm, container, false);
 
-        pref = getActivity().getSharedPreferences(PREFERENCE,MODE_PRIVATE);
+        pref = getActivity().getSharedPreferences("com.example.gosleep",MODE_PRIVATE);
         editor = pref.edit();
         lastSetTime = (TextView)view.findViewById(R.id.lastset);
         lastSetTime.setText(pref.getString("savedAlarm","Last Set Time : None"));
