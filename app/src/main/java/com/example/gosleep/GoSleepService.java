@@ -23,8 +23,8 @@ public class GoSleepService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Intent cIntent = new Intent(this, GoSleepActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, cIntent, 0);
+        //Intent cIntent = new Intent(this, GoSleepActivity.class);
+        //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, cIntent, 0);
 
         Log.d("dddd","Service: onStartCommand");
         NotificationCompat.Builder builder;
@@ -39,8 +39,8 @@ public class GoSleepService extends Service {
             builder = new NotificationCompat.Builder(this);
 
         builder.setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("GoSleep").setContentText("현재 GoSleep 기기와 앱이 연동 상태입니다.")
-                .setContentIntent(pendingIntent);
+                .setContentTitle("GoSleep").setContentText("현재 GoSleep 기기와 앱이 연동 상태입니다.");
+                //.setContentIntent(pendingIntent);
         startForeground(1,builder.build());
 
         return super.onStartCommand(intent, flags, startId);
