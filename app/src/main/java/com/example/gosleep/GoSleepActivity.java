@@ -3,6 +3,7 @@ package com.example.gosleep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.IntentCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
@@ -14,9 +15,11 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,14 +44,13 @@ public class GoSleepActivity extends AppCompatActivity {
     Intent goSleepIntent;
     static final String GOSLEEP_DEVICE_ID = "gosleep";
 
-    DashBoardFragment dashBoardFragment;
     static final int MODE_2 = 2, MODE_3 = 3, MODE_4 = 4, MODE_5 = 5, MODE_6 = 6;
     public int current_mode = 2, moduleControlCMD =0;
     public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
     public boolean velveOn = false, heatOn = false, fanOn = false, moodLEDon = false;
 
-    private BottomNavigationView navigation;//
+    private BottomNavigationView navigation;
     private ViewPager viewPager;
     private GoSleepViewPagerAdapter adapter;
     private MenuItem prevMenuItem;
@@ -91,11 +93,10 @@ public class GoSleepActivity extends AppCompatActivity {
         navigation = (BottomNavigationView)findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavi);
 
-        dashBoardFragment = new DashBoardFragment();
         adapter = new GoSleepViewPagerAdapter(getSupportFragmentManager());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
 
-        adapter.AddFragment(dashBoardFragment,"dash");
+        adapter.AddFragment(new DashBoardFragment(),"dash");
         adapter.AddFragment(new MoodFragment(),"mood");
         adapter.AddFragment(new SettingFragment(),"setting");
         adapter.AddFragment(new DeveloperFragment(),"develop");
@@ -135,19 +136,19 @@ public class GoSleepActivity extends AppCompatActivity {
                 Log.d("dddd", "Receiving Data From Arduino : "+message);
                 String[] array = message.split(",");
                 try {
-                    if (array[0].equals("v")) {           // 밸브 상황(on/off) 비동기 수신
+                    if (array[0].equals("v")) {                     // 밸브 상황(on/off) 비동기 수신
                         if (array[1].equals("1")) velveOn = true;
                         else velveOn = false;
                         moduleControlCMD++;
-                    } else if (array[0].equals("f")) {           // 팬 상황(on/off) 비동기 수신
+                    } else if (array[0].equals("f")) {              // 팬 상황(on/off) 비동기 수신
                         if (array[1].equals("1")) fanOn = true;
                         else fanOn = false;
                         moduleControlCMD++;
-                    } else if (array[0].equals("h")) {           // 열선 상황(on/off) 비동기 수신
+                    } else if (array[0].equals("h")) {              // 열선 상황(on/off) 비동기 수신
                         if (array[1].equals("1")) heatOn = true;
                         else heatOn = false;
                         moduleControlCMD++;
-                    } else if(array[0].equals("t")) {
+                    } else if(array[0].equals("t")) {               // 설정된 알람 시간 동기화
                         if(array[1].equals("n"))
                             editor.putString("savedAlarm","Last Set Time : None");
                         else {
@@ -200,8 +201,9 @@ public class GoSleepActivity extends AppCompatActivity {
                 pairingOn = false;
 
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
-
-                if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
+                if(!task_doing)
+                    newConnectGoSleep();
+                /*if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
                     Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);   // 블루투스를 사용할지 묻자
                     startActivityForResult(intent,BluetoothState.REQUEST_ENABLE_BT);
                 }
@@ -210,7 +212,7 @@ public class GoSleepActivity extends AppCompatActivity {
                     bt.startService(BluetoothState.DEVICE_OTHER);
                 }
                 else if(!task_doing)
-                    newConnectGoSleep();
+                    newConnectGoSleep();*/
             }
 
             @Override
@@ -224,6 +226,16 @@ public class GoSleepActivity extends AppCompatActivity {
         });
 
         ImageView btnConnect = (ImageView)findViewById(R.id.bluetooth);
+
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {       // 비정상 종료 핸들러( 사용자가 블루투스 강종시 동작)
+            @Override
+            public void uncaughtException(@NonNull Thread t, @NonNull Throwable e) {
+                Toast.makeText(getApplicationContext(),"블루투스를 종료하시면 앱을 이용할 수 없습니다",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+                android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(10);
+            }
+        });
     }
 
     public void onDestroy(){
@@ -244,7 +256,8 @@ public class GoSleepActivity extends AppCompatActivity {
     protected void onStart() {   // 호출시점 : 뒤로가기 앱 종료 후 다시 실행시 onCreate 가 아닌 이것이 호출. (아두이노와의 연결 다시 수행해야함)
         super.onStart();
         Log.d("dddd","Activity: onStart");
-        newConnectGoSleep();
+        if(!pairingOn)
+            newConnectGoSleep();
     }
 
     @Override
@@ -252,7 +265,7 @@ public class GoSleepActivity extends AppCompatActivity {
     @Override
     protected void onPause() { Log.d("dddd","Activity: onPause");super.onPause(); }
 
-    @Override
+   @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
