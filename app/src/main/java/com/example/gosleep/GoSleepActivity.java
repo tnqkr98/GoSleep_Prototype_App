@@ -3,6 +3,8 @@ package com.example.gosleep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.IntentCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
@@ -10,14 +12,18 @@ import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 import app.akexorcist.bluetotohspp.library.DeviceList;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -43,6 +49,8 @@ public class GoSleepActivity extends AppCompatActivity {
     Boolean task_doing = false, pairingOn = false;
     Intent goSleepIntent;
     static final String GOSLEEP_DEVICE_ID = "gosleep";
+
+    MyBroadcastReceiver receiver;
 
     static final int MODE_2 = 2, MODE_3 = 3, MODE_4 = 4, MODE_5 = 5, MODE_6 = 6;
     public int current_mode = 2, moduleControlCMD =0;
@@ -236,6 +244,30 @@ public class GoSleepActivity extends AppCompatActivity {
                 System.exit(10);
             }
         });
+
+        /* 비페어링된 기기 탐색을 위한 브로드캐스트리시버 */
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // 등록되지 않은 기기 탐색을 위해
+        if(mBluetoothAdapter.isDiscovering())
+            mBluetoothAdapter.cancelDiscovery();
+        mBluetoothAdapter.startDiscovery();
+        receiver = new MyBroadcastReceiver();
+
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        this.registerReceiver(receiver, filter);
+    }
+
+    public class MyBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {     // 이거 다음 기기 연동때, 완전 자동 연결 실험해볼것.
+            Log.d("dddd", "BroadcastReceiver : onReceive");
+            String action = intent.getAction(); //may need to chain this to a recognizing function
+            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                String derp = device.getName() + " - " + device.getAddress();
+                Log.d("dddd", derp);
+            }
+        }
     }
 
     public void onDestroy(){
@@ -248,6 +280,7 @@ public class GoSleepActivity extends AppCompatActivity {
         arduinoDataRecievOn = false;
         Toast.makeText(getApplicationContext(),"GoSleep : 기기와의 연동을 중단합니다.",Toast.LENGTH_SHORT).show();
         stopService(goSleepIntent);
+        unregisterReceiver(receiver);   // 리시버 등록해제
         finish();
         super.onDestroy();
     }
@@ -328,7 +361,6 @@ public class GoSleepActivity extends AppCompatActivity {
         }
     }
     void connectThread(){
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         mPairedDevices = mBluetoothAdapter.getBondedDevices();
 
         final ProgressDialog progressDialog = new ProgressDialog(GoSleepActivity.this);
@@ -342,7 +374,9 @@ public class GoSleepActivity extends AppCompatActivity {
             public void run() {
                 for(int i=0;i<500;i++){
                     task_doing = true;
+                    // 페어링된(Bonded) 기기집합에서 먼저 찾기
                     for (BluetoothDevice device : mPairedDevices) {
+                        //Log.d("dddd","device name : "+device.getName());
                         if (device.getName().equals(GOSLEEP_DEVICE_ID)) {    // 여기서 모든 고슬립 디바이스명을 지정해야함.
                             goSleepMacAddress = device.getAddress();
                             if(goSleepMacAddress != null) {
@@ -351,10 +385,13 @@ public class GoSleepActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    // 페어링되지 않은 집합에서 찾기(여기 코딩 필요)
+
                     if(pairingOn) {
                         startService(goSleepIntent);     // 포그라운드 서비스 시작.
                         bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
                         progressDialog.dismiss();
+                        mBluetoothAdapter.cancelDiscovery(); // 계속 시작되어있으면 대역폭감소유발 (BroadCast 관련)
                         task_doing = false;
                         break;
                     }
