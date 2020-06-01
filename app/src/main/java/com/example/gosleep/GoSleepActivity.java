@@ -36,6 +36,7 @@ import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -49,6 +50,9 @@ public class GoSleepActivity extends AppCompatActivity {
     Boolean task_doing = false, pairingOn = false;
     Intent goSleepIntent;
     static final String GOSLEEP_DEVICE_ID = "gosleep";
+    HashMap<String,String> unBondedDeviceList;
+    ProgressDialog progressDialog;
+
 
     MyBroadcastReceiver receiver;
 
@@ -200,6 +204,8 @@ public class GoSleepActivity extends AppCompatActivity {
             public void onDeviceConnected(String name, String address) {
                 Log.d("dddd","Activity: onDeviceConnected");
                 pairingOn = true;
+                if(progressDialog.isShowing())
+                    progressDialog.dismiss();
                 Toast.makeText(getApplicationContext(),"Connected to " + name + "\n" + address, Toast.LENGTH_SHORT).show();
             }
 
@@ -248,14 +254,15 @@ public class GoSleepActivity extends AppCompatActivity {
         /* 비페어링된 기기 탐색을 위한 브로드캐스트리시버 */
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // 등록되지 않은 기기 탐색을 위해
+        unBondedDeviceList = new HashMap<>();
         if(mBluetoothAdapter.isDiscovering())
             mBluetoothAdapter.cancelDiscovery();
         mBluetoothAdapter.startDiscovery();
         receiver = new MyBroadcastReceiver();
 
-        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+    IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         this.registerReceiver(receiver, filter);
-    }
+}
 
     public class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
@@ -266,6 +273,7 @@ public class GoSleepActivity extends AppCompatActivity {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String derp = device.getName() + " - " + device.getAddress();
                 Log.d("dddd", derp);
+                unBondedDeviceList.put(device.getName(),device.getAddress());
             }
         }
     }
@@ -363,7 +371,7 @@ public class GoSleepActivity extends AppCompatActivity {
     void connectThread(){
         mPairedDevices = mBluetoothAdapter.getBondedDevices();
 
-        final ProgressDialog progressDialog = new ProgressDialog(GoSleepActivity.this);
+        progressDialog = new ProgressDialog(GoSleepActivity.this);
         progressDialog.setMessage("Find GoSleep....");
         progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -385,7 +393,13 @@ public class GoSleepActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    // 페어링되지 않은 집합에서 찾기(여기 코딩 필요)
+                    // 페어링되지 않은 집합에서 찾기(될까?)
+                    for(String device : unBondedDeviceList.keySet()){
+                        if(device!=null && device.equals(GOSLEEP_DEVICE_ID)){
+                            bt.connect(unBondedDeviceList.get(GOSLEEP_DEVICE_ID));
+                            try { Thread.sleep(1000); } catch (Exception e) { }
+                        }
+                    }
 
                     if(pairingOn) {
                         startService(goSleepIntent);     // 포그라운드 서비스 시작.
