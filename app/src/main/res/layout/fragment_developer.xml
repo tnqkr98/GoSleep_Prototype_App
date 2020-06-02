@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="#222">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#222">
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,14 +35,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="15dp"
+            android:padding="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:textSize="15dp"
+                android:textSize="14dp"
                 android:text=" Current Fan Speed :   " />
 
             <TextView
@@ -59,8 +65,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
+                android:layout_gravity="center_vertical"
                 android:text="  Fan Speed (1~255) : "
-                android:textSize="15dp" />
+                android:textSize="14dp" />
 
             <EditText
                 android:id="@+id/fan_speed"
@@ -69,6 +76,7 @@
                 android:layout_weight="1"
                 android:ems="2"
                 android:gravity="center"
+                android:layout_gravity="center_vertical"
                 android:hint="0"
                 android:inputType="numberDecimal"
                 android:textColorHint="#666"
@@ -76,11 +84,12 @@
 
             <Button
                 android:id="@+id/bt_fanset"
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="40dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="10dp"
                 android:layout_weight="1"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/bt_type2"
                 android:backgroundTint="#333"
                 android:text="Set" />
@@ -90,15 +99,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="10dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="  Fan Control (ON/OFF) : "
-                android:textSize="15dp" />
+                android:textSize="14dp" />
 
             <Switch
                 android:id="@+id/fan_switch"
@@ -202,12 +211,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <TextView
-                android:layout_width="170dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:layout_gravity="center_vertical"
                 android:text="  Distance :    "
                 android:textSize="15dp" />
 
@@ -215,7 +225,10 @@
                 android:id="@+id/txt_dist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="80dp"
                 android:textSize="20dp"
                 android:text="0 cm" />
 
@@ -224,29 +237,33 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp"
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="170dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:layout_gravity="center_vertical"
                 android:text="  CO2 concentration : "
                 android:textSize="15dp" />
 
             <TextView
                 android:id="@+id/txt_co2"
-                android:layout_width="100dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:textSize="20dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_gravity="center_vertical"
+                android:textSize="18dp"
+                android:paddingRight="30dp"
                 android:text="0000 ppm" />
 
             <Button
                 android:id="@+id/zpbutton"
-                android:layout_width="60dp"
+                android:layout_width="50dp"
                 android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
+                android:layout_gravity="right|center_vertical"
                 android:layout_weight="0"
                 android:background="@drawable/bt_type2"
                 android:backgroundTint="#333"
@@ -258,12 +275,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="5dp">
 
             <TextView
-                android:layout_width="170dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:layout_gravity="center_vertical"
                 android:text="  Illuminance : "
                 android:textSize="15dp" />
 
@@ -271,7 +289,10 @@
                 android:id="@+id/txt_illu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:layout_gravity="center_vertical"
+                android:paddingRight="80dp"
                 android:textSize="20dp"
                 android:text="0 lux" />
 
@@ -279,3 +300,4 @@
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>
+</ScrollView>

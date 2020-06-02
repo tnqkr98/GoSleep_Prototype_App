@@ -50,7 +50,7 @@ public class GoSleepActivity extends AppCompatActivity {
     Boolean task_doing = false, pairingOn = false;
     Intent goSleepIntent;
     static final String GOSLEEP_DEVICE_ID = "gosleep";
-    HashMap<String,String> unBondedDeviceList;
+    static HashMap<String,String> unBondedDeviceList;
     ProgressDialog progressDialog;
 
 
@@ -264,7 +264,7 @@ public class GoSleepActivity extends AppCompatActivity {
         this.registerReceiver(receiver, filter);
 }
 
-    public class MyBroadcastReceiver extends BroadcastReceiver {
+    public static class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {     // 이거 다음 기기 연동때, 완전 자동 연결 실험해볼것.
             Log.d("dddd", "BroadcastReceiver : onReceive");
