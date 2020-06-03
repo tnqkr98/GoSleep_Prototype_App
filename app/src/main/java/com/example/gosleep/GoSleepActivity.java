@@ -52,6 +52,7 @@ public class GoSleepActivity extends AppCompatActivity {
     static final String GOSLEEP_DEVICE_ID = "gosleep";
     static HashMap<String,String> unBondedDeviceList;
     ProgressDialog progressDialog;
+    static boolean unbindDiscovering  = false;
 
 
     MyBroadcastReceiver receiver;
@@ -255,25 +256,37 @@ public class GoSleepActivity extends AppCompatActivity {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // 등록되지 않은 기기 탐색을 위해
         unBondedDeviceList = new HashMap<>();
-        if(mBluetoothAdapter.isDiscovering())
-            mBluetoothAdapter.cancelDiscovery();
-        mBluetoothAdapter.startDiscovery();
+
         receiver = new MyBroadcastReceiver();
 
-    IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothDevice.ACTION_FOUND);             // 왜  android 9.0 은  이것을 수신하지 못할까?
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
         this.registerReceiver(receiver, filter);
-}
+    }
 
-    public static class MyBroadcastReceiver extends BroadcastReceiver {
+    public static final class MyBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {     // 이거 다음 기기 연동때, 완전 자동 연결 실험해볼것.
-            Log.d("dddd", "BroadcastReceiver : onReceive");
             String action = intent.getAction(); //may need to chain this to a recognizing function
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                Log.d("dddd","BroadcastReceiver : ACTION_FOUND");
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 String derp = device.getName() + " - " + device.getAddress();
                 Log.d("dddd", derp);
                 unBondedDeviceList.put(device.getName(),device.getAddress());
+            }
+
+            if(BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
+                unBondedDeviceList.clear();
+                unbindDiscovering = true;
+                Log.d("dddd", "BroadcastReceiver : ACTION_DISCOVERY_STARTED");
+            }
+            
+            if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                Log.d("dddd", "BroadcastReceiver : ACTION_DISCOVERY_FINISHED");
+                unbindDiscovering = false;
             }
         }
     }
@@ -371,6 +384,10 @@ public class GoSleepActivity extends AppCompatActivity {
     void connectThread(){
         mPairedDevices = mBluetoothAdapter.getBondedDevices();
 
+        if(mBluetoothAdapter.isDiscovering())
+            mBluetoothAdapter.cancelDiscovery();
+        mBluetoothAdapter.startDiscovery();
+
         progressDialog = new ProgressDialog(GoSleepActivity.this);
         progressDialog.setMessage("Find GoSleep....");
         progressDialog.setCancelable(false);
@@ -393,7 +410,12 @@ public class GoSleepActivity extends AppCompatActivity {
                             }
                         }
                     }
-                    // 페어링되지 않은 집합에서 찾기(될까?)
+                    // 페어링되지 않은 집합에서 찾기(될까? 된다. Android 8.0 이하만;)
+                    if(!unbindDiscovering){
+                        mBluetoothAdapter.cancelDiscovery();
+                        mBluetoothAdapter.startDiscovery();
+                    }
+
                     for(String device : unBondedDeviceList.keySet()){
                         if(device!=null && device.equals(GOSLEEP_DEVICE_ID)){
                             bt.connect(unBondedDeviceList.get(GOSLEEP_DEVICE_ID));
