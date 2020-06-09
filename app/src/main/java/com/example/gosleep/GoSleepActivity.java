@@ -59,7 +59,7 @@ public class GoSleepActivity extends AppCompatActivity {
 
     static final int MODE_2 = 2, MODE_3 = 3, MODE_4 = 4, MODE_5 = 5, MODE_6 = 6;
     public int current_mode = 2, moduleControlCMD =0;
-    public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000";
+    public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000", cds="0 lux";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
     public boolean velveOn = false, heatOn = false, fanOn = false, moodLEDon = false;
 
@@ -146,7 +146,7 @@ public class GoSleepActivity extends AppCompatActivity {
             @Override
             public void onDataReceived(byte[] data, String message) {
                 arduinoDataRecievOn = true;
-                Log.d("dddd", "Receiving Data From Arduino : "+message);
+                //Log.d("dddd", "Receiving Data From Arduino : "+message);
                 String[] array = message.split(",");
                 try {
                     if (array[0].equals("v")) {                     // 밸브 상황(on/off) 비동기 수신
@@ -178,8 +178,8 @@ public class GoSleepActivity extends AppCompatActivity {
                         if (array.length > 4) {   // uno test
                             co2 = array[4].concat(" ppm");
                             dist = array[5].concat(" cm");
+                            cds = array[6].concat(" lux");
                         }
-                        // 조도 받기.
 
                         current_mode = Integer.parseInt(array[3]);
 
@@ -283,7 +283,7 @@ public class GoSleepActivity extends AppCompatActivity {
                 unbindDiscovering = true;
                 Log.d("dddd", "BroadcastReceiver : ACTION_DISCOVERY_STARTED");
             }
-            
+
             if(BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
                 Log.d("dddd", "BroadcastReceiver : ACTION_DISCOVERY_FINISHED");
                 unbindDiscovering = false;
@@ -411,10 +411,10 @@ public class GoSleepActivity extends AppCompatActivity {
                         }
                     }
                     // 페어링되지 않은 집합에서 찾기(될까? 된다. Android 8.0 이하만;)
-                    if(!unbindDiscovering){
+                    /*if(!unbindDiscovering){
                         mBluetoothAdapter.cancelDiscovery();
                         mBluetoothAdapter.startDiscovery();
-                    }
+                    }*/
 
                     for(String device : unBondedDeviceList.keySet()){
                         if(device!=null && device.equals(GOSLEEP_DEVICE_ID)){

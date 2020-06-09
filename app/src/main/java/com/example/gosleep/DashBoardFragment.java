@@ -18,7 +18,7 @@ import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
 
 public class DashBoardFragment extends Fragment {
-    TextView tem, hum, mode,co2;
+    TextView tem, hum, mode,co2,tx_cds;
     private static Handler mHandler;
     Bundle receivbundle;
     View view;
@@ -41,6 +41,7 @@ public class DashBoardFragment extends Fragment {
         hum = (TextView)view.findViewById(R.id.txt_hum);
         co2 = (TextView)view.findViewById(R.id.co2);
         mode = (TextView)view.findViewById(R.id.mode_txt);
+        tx_cds = (TextView)view.findViewById(R.id.tx_cds);
 
         back = (Button)view.findViewById(R.id.backbt);
         next = (Button)view.findViewById(R.id.nextbt);
@@ -54,6 +55,7 @@ public class DashBoardFragment extends Fragment {
                         tem.setText(((GoSleepActivity) getActivity()).tem);
                         hum.setText(((GoSleepActivity) getActivity()).hum);
                         co2.setText(((GoSleepActivity)getActivity()).co2);
+                        tx_cds.setText(((GoSleepActivity)getActivity()).cds);
 
                         switch (((GoSleepActivity) getActivity()).current_mode){
                             case 2: mode.setText("Current Mode : Waiting Mode");break;
@@ -70,7 +72,7 @@ public class DashBoardFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((GoSleepActivity)getActivity()).bt.send("mback",true);
+                ((GoSleepActivity)getActivity()).bt.send("mb",true);
                 Log.d("dddd", "Send back");
             }
         });
@@ -78,7 +80,7 @@ public class DashBoardFragment extends Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((GoSleepActivity)getActivity()).bt.send("mnext",true);
+                ((GoSleepActivity)getActivity()).bt.send("mn",true);
                 Log.d("dddd", "Send next");
             }
         });

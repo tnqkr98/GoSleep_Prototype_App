@@ -112,6 +112,7 @@ public class DeveloperFragment extends Fragment {
                         fanSpeed.setText(((GoSleepActivity) getActivity()).fanspeed);
                         co2.setText(((GoSleepActivity)getActivity()).co2);
                         distance.setText(((GoSleepActivity)getActivity()).dist);
+                        illuminance.setText(((GoSleepActivity)getActivity()).cds);
 
                         if (((GoSleepActivity)getActivity()).moduleControlCMD > 0) {
                             if(((GoSleepActivity)getActivity()).fanOn) fanSwit.setChecked(true);

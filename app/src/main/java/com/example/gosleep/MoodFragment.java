@@ -49,8 +49,9 @@ public class MoodFragment extends Fragment {
                 int argb = picker.getColor();
                 if(((GoSleepActivity)getActivity()).moodLEDon) {   // 한번에 많은 터치 인식 이슈 해결 필요
                     ((GoSleepActivity) getActivity()).bt.send("lp" + threeChar(getRed(argb)) + threeChar(getGreen(argb)) + threeChar(getBlue(argb)), true);
+                    Log.d("dddd","lp" + threeChar(getRed(argb))+" "+ threeChar(getGreen(argb))+" " + threeChar(getBlue(argb)));
                     try {
-                        Thread.sleep(30); //동작이 너무 빠르면 아두이노 통신 상 큐에 너무쌓여서 출력 딜레이발생.
+                        Thread.sleep(50); //동작이 너무 빠르면 아두이노 통신 상 큐에 너무쌓여서 출력 딜레이발생.
                     }catch (Exception e){}
                 }
             }
