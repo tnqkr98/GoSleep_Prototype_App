@@ -61,8 +61,8 @@ public class SettingFragment extends Fragment {
 
         eHour = (EditText)view.findViewById(R.id.hour);
         eMin = (EditText)view.findViewById(R.id.min);
-        eDay = (EditText)view.findViewById(R.id.day);
-        eMonth = (EditText)view.findViewById(R.id.month);
+        //eDay = (EditText)view.findViewById(R.id.day);
+        //eMonth = (EditText)view.findViewById(R.id.month);
 
         radioButtonClickListener = new View.OnClickListener() {
             @Override
@@ -100,7 +100,6 @@ public class SettingFragment extends Fragment {
         r5 = (RadioButton)view.findViewById(R.id.radioButton5);
         r5.setOnClickListener(radioButtonClickListener);
 
-
         long now = System.currentTimeMillis();
         dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
         Date dateNow = new Date(now);
@@ -108,8 +107,8 @@ public class SettingFragment extends Fragment {
         // 현재 시각으로 설정
         eHour.setText(dateNow.getHours()+"");
         eMin.setText(dateNow.getMinutes()+"");
-        eDay.setText(dateNow.getDate()+"");
-        eMonth.setText(dateNow.getMonth()+1+"");
+        //eDay.setText(dateNow.getDate()+"");
+        //eMonth.setText(dateNow.getMonth()+1+"");
         //eFan.setText(""+0);
 
         setButton = (Button)view.findViewById(R.id.setbt);
@@ -117,11 +116,11 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 hour = Integer.parseInt(eHour.getText().toString());
-                month = Integer.parseInt(eMonth.getText().toString());
-                day = Integer.parseInt(eDay.getText().toString());
+                //month = Integer.parseInt(eMonth.getText().toString());
+                //day = Integer.parseInt(eDay.getText().toString());
                 min = Integer.parseInt(eMin.getText().toString());
 
-                if(hour > 60 || month >12 || day >31 || min > 60) //윤년 및 각 달별 날짜 계산 보류
+                if(hour > 60 || min > 60)
                     badInput = true;
                 else
                     badInput = false;
@@ -130,42 +129,42 @@ public class SettingFragment extends Fragment {
                     mHour = "0"+hour;
                 else
                     mHour = hour+"";
-                if(month<10)
+                /*if(month<10)
                     mMonth = "0"+month;
                 else
-                    mMonth = month+"";
-                if(day<10)
+                    mMonth = month+"";*/
+                /*if(day<10)
                     mDay = "0"+day;
                 else
-                    mDay = day+"";
+                    mDay = day+"";*/
                 if(min<10)
                     mMin = "0"+min;
                 else
                     mMin = min +"";
 
-                try {
-                    long now = System.currentTimeMillis();
-                    Date dateNow = new Date(now);
-                    Date dateAlram = dateFormat.parse((dateNow.getYear()+1900)+mMonth+mDay+mHour+mMin);
-                    long duration = dateAlram.getTime() - dateNow.getTime();
+                //try {
+                    //long now = System.currentTimeMillis();
+                    //Date dateNow = new Date(now);
+                    //Date dateAlram = dateFormat.parse((dateNow.getYear()+1900)+mMonth+mDay+mHour+mMin);
+                    //long duration = dateAlram.getTime() - dateNow.getTime();
 
-                    if(duration>0 && !badInput) {
-                        ((GoSleepActivity) getActivity()).bt.send("t" + mMonth + mDay + mHour + mMin, true);
-                        Log.d("dddd", "Sending..: " + mMonth + mDay + mHour + mMin);
-                        editor.putString("savedAlarm","Last Set Time : "+mMonth+"월 "+mDay+"일 "+mHour+"시 "+mMin+"분");
-                        lastSetTime.setText("Last Set Time : "+mMonth+"월 "+mDay+"일 "+mHour+"시 "+mMin+"분");
+                    if(!badInput) {
+                        ((GoSleepActivity) getActivity()).bt.send("t" + mHour + mMin, true);
+                        Log.d("dddd", "Sending..: " + mHour + mMin);
+                        editor.putString("savedAlarm","Last Set Time : "+mHour+"시 "+mMin+"분");
+                        lastSetTime.setText("Last Set Time : "+mHour+"시 "+mMin+"분");
                         Toast.makeText(view.getContext(),"알람이 설정 되었습니다.",Toast.LENGTH_SHORT).show();
                         editor.commit();
                     }
-                    else if(badInput) {
-                        Toast.makeText(view.getContext(),"날짜와 시간을 정확히 입력해 주세요",Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                        Toast.makeText(view.getContext(),"현재 시간 보다 이후 시간을 설정하세요",Toast.LENGTH_SHORT).show();
+                    else //if(badInput) {
+                        Toast.makeText(view.getContext(),"시간을 정확히 입력해 주세요",Toast.LENGTH_SHORT).show();
+                    //}
+                    //else
+                    //    Toast.makeText(view.getContext(),"현재 시간 보다 이후 시간을 설정하세요",Toast.LENGTH_SHORT).show();
 
-                }catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                //}catch (ParseException e) {
+                //    e.printStackTrace();
+               // }
             }
         });
         resetButton = (Button)view.findViewById(R.id.resetbt);

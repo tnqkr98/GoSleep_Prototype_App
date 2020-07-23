@@ -54,7 +54,6 @@ public class GoSleepActivity extends AppCompatActivity {
     ProgressDialog progressDialog;
     static boolean unbindDiscovering  = false;
 
-
     MyBroadcastReceiver receiver;
 
     static final int MODE_2 = 2, MODE_3 = 3, MODE_4 = 4, MODE_5 = 5, MODE_6 = 6;
@@ -146,7 +145,7 @@ public class GoSleepActivity extends AppCompatActivity {
             @Override
             public void onDataReceived(byte[] data, String message) {
                 arduinoDataRecievOn = true;
-                //Log.d("dddd", "Receiving Data From Arduino : "+message);
+                Log.d("dddd", "Receiving Data From Arduino : "+message);
                 String[] array = message.split(",");
                 try {
                     if (array[0].equals("v")) {                     // 밸브 상황(on/off) 비동기 수신
@@ -165,7 +164,7 @@ public class GoSleepActivity extends AppCompatActivity {
                         if(array[1].equals("n"))
                             editor.putString("savedAlarm","Last Set Time : None");
                         else {
-                            String s = "Last Set Time : "+array[1]+"월 "+array[2]+"일 "+array[3]+"시 "+array[4]+"분";
+                            String s = "Last Set Time : "+array[1]+"시 "+array[2]+"분";
                             Log.d("dddd","alarm receiv : "+s);
                             editor.putString("savedAlarm", s);
                         }

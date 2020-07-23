@@ -77,7 +77,7 @@ public class MoodFragment extends Fragment {
                     else
                         ((GoSleepActivity) getActivity()).bt.send("lb00"+data, true);
                 }
-            }
+            }  
         });
         lightonoff.setOnClickListener(new View.OnClickListener() {
             @Override
