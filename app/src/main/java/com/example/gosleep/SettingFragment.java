@@ -30,7 +30,7 @@ public class SettingFragment extends Fragment {
     View view;
     Button setButton, resetButton;
     RadioGroup radioGroup;
-    RadioButton r1,r2,r3,r4,r5;
+    RadioButton r2,r3,r4;
     TextView lastSetTime;
 
     boolean badInput = false;
@@ -68,20 +68,14 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                     switch(view.getId()){
-                        case R.id.radioButton:
-                            ((GoSleepActivity) getActivity()).bt.send("fs0" + 51, true);
-                            break;
                         case R.id.radioButton2:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 102, true);
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 57, true);  // 4.5v
                             break;
                         case R.id.radioButton3:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 153, true);
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 68, true);  //  5v
                             break;
                         case R.id.radioButton4:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 204, true);
-                            break;
-                        case R.id.radioButton5:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 255, true);
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 80, true); //  5.5v
                             break;
                     }
             }
@@ -91,14 +85,10 @@ public class SettingFragment extends Fragment {
         r3.setOnClickListener(radioButtonClickListener);
         r3.setChecked(true);
 
-        r1 = (RadioButton)view.findViewById(R.id.radioButton);
-        r1.setOnClickListener(radioButtonClickListener);
         r2 = (RadioButton)view.findViewById(R.id.radioButton2);
         r2.setOnClickListener(radioButtonClickListener);
         r4 = (RadioButton)view.findViewById(R.id.radioButton4);
         r4.setOnClickListener(radioButtonClickListener);
-        r5 = (RadioButton)view.findViewById(R.id.radioButton5);
-        r5.setOnClickListener(radioButtonClickListener);
 
         long now = System.currentTimeMillis();
         dateFormat = new SimpleDateFormat("yyyyMMddHHmm");

@@ -13,11 +13,12 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 public class GoSleepService extends Service {
-    public GoSleepService() {Log.d("dddd","Service: construct"); }
+    public GoSleepService() {//Log.d("dddd","Service: construct");
+    }
 
     @Override
     public void onCreate() {
-        Log.d("dddd","Service: onCreate");
+       // Log.d("dddd","Service: onCreate");
         super.onCreate();
     }
 
@@ -26,7 +27,7 @@ public class GoSleepService extends Service {
         //Intent cIntent = new Intent(this, GoSleepActivity.class);
         //PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, cIntent, 0);
 
-        Log.d("dddd","Service: onStartCommand");
+        //Log.d("dddd","Service: onStartCommand");
         NotificationCompat.Builder builder;
         if (Build.VERSION.SDK_INT >= 26){
             String CHANNEL_ID = "channel_id";
@@ -49,7 +50,7 @@ public class GoSleepService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d("dddd","Service: onDestroy");
+        //Log.d("dddd","Service: onDestroy");
         super.onDestroy();
     }
 

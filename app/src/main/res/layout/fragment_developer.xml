@@ -255,7 +255,7 @@
                 android:layout_weight="1"
                 android:gravity="right"
                 android:layout_gravity="center_vertical"
-                android:textSize="18dp"
+                android:textSize="15dp"
                 android:paddingRight="30dp"
                 android:text="0000 ppm" />
 

@@ -203,10 +203,12 @@ public class GoSleepActivity extends AppCompatActivity {
             @Override
             public void onDeviceConnected(String name, String address) {
                 Log.d("dddd","Activity: onDeviceConnected");
+                startService(goSleepIntent);     // 포그라운드 서비스 시작.
+                bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
+                progressDialog.dismiss();
+                task_doing = false;
                 pairingOn = true;
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Toast.makeText(getApplicationContext(),"Connected to " + name + "\n" + address, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"GoSleep : Connected to " + name, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -215,18 +217,8 @@ public class GoSleepActivity extends AppCompatActivity {
                 pairingOn = false;
 
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
-                if(!task_doing)
+                if(!pairingOn && !task_doing)
                     newConnectGoSleep();
-                /*if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
-                    Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);   // 블루투스를 사용할지 묻자
-                    startActivityForResult(intent,BluetoothState.REQUEST_ENABLE_BT);
-                }
-                else if(!bt.isServiceAvailable()){   // // 단말기 블루투스가 작동중, 서비스가 미작동 중이라면,
-                    bt.setupService();
-                    bt.startService(BluetoothState.DEVICE_OTHER);
-                }
-                else if(!task_doing)
-                    newConnectGoSleep();*/
             }
 
             @Override
@@ -234,7 +226,7 @@ public class GoSleepActivity extends AppCompatActivity {
                 Log.d("dddd","Activity: onDeviceConnectionFailed");
                 pairingOn = false;
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
-                if(!task_doing)
+                if(!pairingOn && !task_doing)
                     newConnectGoSleep();
             }
         });
@@ -251,10 +243,10 @@ public class GoSleepActivity extends AppCompatActivity {
             }
         });
 
-        /* 비페어링된 기기 탐색을 위한 브로드캐스트리시버 */
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        /* 비페어링된 기기 탐색을 위한 브로드캐스트리시버 */
         // 등록되지 않은 기기 탐색을 위해
-        unBondedDeviceList = new HashMap<>();
+        /*unBondedDeviceList = new HashMap<>();
 
         receiver = new MyBroadcastReceiver();
 
@@ -262,7 +254,7 @@ public class GoSleepActivity extends AppCompatActivity {
         filter.addAction(BluetoothDevice.ACTION_FOUND);             // 왜  android 9.0 은  이것을 수신하지 못할까?
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
         filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        this.registerReceiver(receiver, filter);
+        this.registerReceiver(receiver, filter);*/
     }
 
     public static final class MyBroadcastReceiver extends BroadcastReceiver {
@@ -300,7 +292,7 @@ public class GoSleepActivity extends AppCompatActivity {
         arduinoDataRecievOn = false;
         Toast.makeText(getApplicationContext(),"GoSleep : 기기와의 연동을 중단합니다.",Toast.LENGTH_SHORT).show();
         stopService(goSleepIntent);
-        unregisterReceiver(receiver);   // 리시버 등록해제
+        //unregisterReceiver(receiver);   // 리시버 등록해제
         finish();
         super.onDestroy();
     }
@@ -309,7 +301,7 @@ public class GoSleepActivity extends AppCompatActivity {
     protected void onStart() {   // 호출시점 : 뒤로가기 앱 종료 후 다시 실행시 onCreate 가 아닌 이것이 호출. (아두이노와의 연결 다시 수행해야함)
         super.onStart();
         Log.d("dddd","Activity: onStart");
-        if(!pairingOn)
+        if(!pairingOn && !task_doing)
             newConnectGoSleep();
     }
 
@@ -348,7 +340,7 @@ public class GoSleepActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {  // 강제 종료 시, 앱과 기기의 연동이 중단된다는 경고
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("").setMessage("앱을 종료하시면, 기기의 작동이 중단됩니다.");
+        builder.setTitle("").setMessage("앱을 종료하시겠습니까?");
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -365,7 +357,7 @@ public class GoSleepActivity extends AppCompatActivity {
     }
 
     private void newConnectGoSleep(){
-        //Log.d("dddd","newConnectGosleep");
+        Log.d("dddd","newConnectGosleep");
         if(!bt.isBluetoothEnabled()){   // 단말기 블루투스가 작동 중이 아닌경우
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);   // 블루투스를 사용할지 묻자
             startActivityForResult(intent,BluetoothState.REQUEST_ENABLE_BT);
@@ -381,11 +373,10 @@ public class GoSleepActivity extends AppCompatActivity {
         }
     }
     void connectThread(){
-        mPairedDevices = mBluetoothAdapter.getBondedDevices();
-
-        if(mBluetoothAdapter.isDiscovering())
-            mBluetoothAdapter.cancelDiscovery();
-        mBluetoothAdapter.startDiscovery();
+        Log.d("dddd","connectThread()");
+        //if(mBluetoothAdapter.isDiscovering())
+        //    mBluetoothAdapter.cancelDiscovery();
+        //mBluetoothAdapter.startDiscovery();
 
         progressDialog = new ProgressDialog(GoSleepActivity.this);
         progressDialog.setMessage("Find GoSleep....");
@@ -397,40 +388,53 @@ public class GoSleepActivity extends AppCompatActivity {
             @Override
             public void run() {
                 for(int i=0;i<500;i++){
-                    task_doing = true;
-                    // 페어링된(Bonded) 기기집합에서 먼저 찾기
-                    for (BluetoothDevice device : mPairedDevices) {
-                        //Log.d("dddd","device name : "+device.getName());
-                        if (device.getName().equals(GOSLEEP_DEVICE_ID)) {    // 여기서 모든 고슬립 디바이스명을 지정해야함.
-                            goSleepMacAddress = device.getAddress();
-                            if(goSleepMacAddress != null) {
-                                bt.connect(goSleepMacAddress);
-                                try { Thread.sleep(1000); } catch (Exception e) { }
+                    if(!pairingOn) {
+                        Log.d("dddd", "connectThread() run() i:" + i);
+                        task_doing = true;
+                        // 페어링된(Bonded) 기기집합에서 먼저 찾기
+                        mPairedDevices = mBluetoothAdapter.getBondedDevices();
+                        for (BluetoothDevice device : mPairedDevices) {
+                            Log.d("dddd", "device name : " + device.getName().substring(0, 7));
+                            if (device.getName().substring(0, 7).equals(GOSLEEP_DEVICE_ID)) {
+                                goSleepMacAddress = device.getAddress();
+                                //Log.d("dddd","device address : "+device.getAddress());
+                                if (goSleepMacAddress != null) {
+                                    bt.connect(goSleepMacAddress);
+                                    Log.d("dddd", "디바이스 발견 " + device.getName() + "," + device.getAddress());
+                                    try {
+                                        Thread.sleep(2000);
+                                    } catch (Exception e) {
+                                    }
+                                    break;
+                                }
                             }
                         }
-                    }
-                    // 페어링되지 않은 집합에서 찾기(될까? 된다. Android 8.0 이하만;)
+                        // 페어링되지 않은 집합에서 찾기(될까? 된다. Android 8.0 이하만;)
                     /*if(!unbindDiscovering){
                         mBluetoothAdapter.cancelDiscovery();
                         mBluetoothAdapter.startDiscovery();
                     }*/
 
-                    for(String device : unBondedDeviceList.keySet()){
-                        if(device!=null && device.equals(GOSLEEP_DEVICE_ID)){
+                    /*for(String device : unBondedDeviceList.keySet()){
+                        if(device!=null && device.substring(0,6).equals(GOSLEEP_DEVICE_ID)){
                             bt.connect(unBondedDeviceList.get(GOSLEEP_DEVICE_ID));
                             try { Thread.sleep(1000); } catch (Exception e) { }
                         }
-                    }
+                    }*/
 
-                    if(pairingOn) {
+                    /*if(pairingOn) {
                         startService(goSleepIntent);     // 포그라운드 서비스 시작.
                         bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
                         progressDialog.dismiss();
-                        mBluetoothAdapter.cancelDiscovery(); // 계속 시작되어있으면 대역폭감소유발 (BroadCast 관련)
+                        //mBluetoothAdapter.cancelDiscovery(); // 계속 시작되어있으면 대역폭감소유발 (BroadCast 관련)
                         task_doing = false;
                         break;
+                    }*/
+                        try {
+                            Thread.sleep(1000);
+                        } catch (Exception e) {
+                        }
                     }
-                    try { Thread.sleep(1000); } catch (Exception e) { }
                 }
             }
         };

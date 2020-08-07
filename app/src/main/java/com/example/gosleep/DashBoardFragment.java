@@ -62,7 +62,7 @@ public class DashBoardFragment extends Fragment {
                             case 3: mode.setText("Current Mode : Distance Mode");break;
                             case 4: mode.setText("Current Mode : Sleep Mode");break;
                             case 5: mode.setText("Current Mode : Sensing Mode");break;
-                            case 6: mode.setText("Current Mode : Alarm Mode");break;
+                            case 6: mode.setText("Current Mode : Wake Mode");break;
                         }
                      }
                 }catch (Exception e){}

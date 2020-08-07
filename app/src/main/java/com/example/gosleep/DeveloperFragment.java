@@ -40,6 +40,7 @@ public class DeveloperFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_developer, container, false);
         eFan = (EditText)view.findViewById(R.id.fan_speed);
+        eFan.setText("80");
 
         fanSpeed = (TextView)view.findViewById(R.id.fanspeedtxt);
         distance = (TextView)view.findViewById(R.id.txt_dist);
@@ -50,7 +51,7 @@ public class DeveloperFragment extends Fragment {
         fanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int speed = Integer.parseInt(eFan.getText().toString());
+                int speed = Integer.parseInt(eFan.getText().toString());            /// 여기 에러
                 if(speed<10)
                     ((GoSleepActivity) getActivity()).bt.send("fs00" + speed, true);
                 else if(speed >=10 && speed <100)
@@ -125,8 +126,6 @@ public class DeveloperFragment extends Fragment {
                         }
                     }
                 }catch (Exception e){}
-
-
             }
         };
 
