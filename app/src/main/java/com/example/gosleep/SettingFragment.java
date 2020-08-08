@@ -69,13 +69,13 @@ public class SettingFragment extends Fragment {
             public void onClick(View view) {
                     switch(view.getId()){
                         case R.id.radioButton2:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 57, true);  // 4.5v
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 57, true);  // 4.5v  약
                             break;
                         case R.id.radioButton3:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 68, true);  //  5v
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 68, true);  //  5v   중
                             break;
                         case R.id.radioButton4:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 80, true); //  5.5v
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 80, true); //  5.5v   강
                             break;
                     }
             }
@@ -105,56 +105,39 @@ public class SettingFragment extends Fragment {
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hour = Integer.parseInt(eHour.getText().toString());
-                //month = Integer.parseInt(eMonth.getText().toString());
-                //day = Integer.parseInt(eDay.getText().toString());
-                min = Integer.parseInt(eMin.getText().toString());
+                String h,m;
+                h = eHour.getText().toString();
+                m = eMin.getText().toString();
+                if(!h.isEmpty() && !m.isEmpty()) {
+                    hour = Integer.parseInt(h);
+                    min = Integer.parseInt(m);
 
-                if(hour > 60 || min > 60)
-                    badInput = true;
-                else
-                    badInput = false;
+                    if (hour > 60 || min > 60)
+                        badInput = true;
+                    else
+                        badInput = false;
 
-                if(hour < 10)
-                    mHour = "0"+hour;
-                else
-                    mHour = hour+"";
-                /*if(month<10)
-                    mMonth = "0"+month;
-                else
-                    mMonth = month+"";*/
-                /*if(day<10)
-                    mDay = "0"+day;
-                else
-                    mDay = day+"";*/
-                if(min<10)
-                    mMin = "0"+min;
-                else
-                    mMin = min +"";
+                    if (hour < 10)
+                        mHour = "0" + hour;
+                    else
+                        mHour = hour + "";
+                    if (min < 10)
+                        mMin = "0" + min;
+                    else
+                        mMin = min + "";
 
-                //try {
-                    //long now = System.currentTimeMillis();
-                    //Date dateNow = new Date(now);
-                    //Date dateAlram = dateFormat.parse((dateNow.getYear()+1900)+mMonth+mDay+mHour+mMin);
-                    //long duration = dateAlram.getTime() - dateNow.getTime();
-
-                    if(!badInput) {
+                    if (!badInput) {
                         ((GoSleepActivity) getActivity()).bt.send("t" + mHour + mMin, true);
                         Log.d("dddd", "Sending..: " + mHour + mMin);
-                        editor.putString("savedAlarm","Last Set Time : "+mHour+"시 "+mMin+"분");
-                        lastSetTime.setText("Last Set Time : "+mHour+"시 "+mMin+"분");
-                        Toast.makeText(view.getContext(),"알람이 설정 되었습니다.",Toast.LENGTH_SHORT).show();
+                        editor.putString("savedAlarm", "Last Set Time : " + mHour + "시 " + mMin + "분");
+                        lastSetTime.setText("Last Set Time : " + mHour + "시 " + mMin + "분");
+                        Toast.makeText(view.getContext(), "알람이 설정 되었습니다.", Toast.LENGTH_SHORT).show();
                         editor.commit();
-                    }
-                    else //if(badInput) {
-                        Toast.makeText(view.getContext(),"시간을 정확히 입력해 주세요",Toast.LENGTH_SHORT).show();
-                    //}
-                    //else
-                    //    Toast.makeText(view.getContext(),"현재 시간 보다 이후 시간을 설정하세요",Toast.LENGTH_SHORT).show();
-
-                //}catch (ParseException e) {
-                //    e.printStackTrace();
-               // }
+                    } else
+                        Toast.makeText(view.getContext(), "시간을 정확히 입력해 주세요", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(view.getContext(),"값을 입력하시오",Toast.LENGTH_SHORT);
             }
         });
         resetButton = (Button)view.findViewById(R.id.resetbt);

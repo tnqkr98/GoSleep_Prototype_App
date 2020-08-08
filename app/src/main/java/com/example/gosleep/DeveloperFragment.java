@@ -13,6 +13,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +41,7 @@ public class DeveloperFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_developer, container, false);
         eFan = (EditText)view.findViewById(R.id.fan_speed);
-        eFan.setText("80");
+        eFan.setText("68");
 
         fanSpeed = (TextView)view.findViewById(R.id.fanspeedtxt);
         distance = (TextView)view.findViewById(R.id.txt_dist);
@@ -51,13 +52,18 @@ public class DeveloperFragment extends Fragment {
         fanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int speed = Integer.parseInt(eFan.getText().toString());            /// 여기 에러
-                if(speed<10)
-                    ((GoSleepActivity) getActivity()).bt.send("fs00" + speed, true);
-                else if(speed >=10 && speed <100)
-                    ((GoSleepActivity) getActivity()).bt.send("fs0" + speed, true);
+                int speed = 68;
+                if(!eFan.getText().toString().isEmpty()) {
+                    speed = Integer.parseInt(eFan.getText().toString());
+                    if (speed < 10)
+                        ((GoSleepActivity) getActivity()).bt.send("fs00" + speed, true);
+                    else if (speed >= 10 && speed < 100)
+                        ((GoSleepActivity) getActivity()).bt.send("fs0" + speed, true);
+                    else
+                        ((GoSleepActivity) getActivity()).bt.send("fs" + speed, true);
+                }
                 else
-                    ((GoSleepActivity) getActivity()).bt.send("fs" + speed, true);
+                    Toast.makeText(view.getContext(),"값을 입력하시오",Toast.LENGTH_SHORT);
             }
         });
 
@@ -108,8 +114,6 @@ public class DeveloperFragment extends Fragment {
             public void handleMessage(@NonNull Message msg) {
                 try {
                     if (msg.what == 0) {
-                        //tem.setText(((GoSleepActivity) getActivity()).tem);
-                        //hum.setText(((GoSleepActivity) getActivity()).hum);
                         fanSpeed.setText(((GoSleepActivity) getActivity()).fanspeed);
                         co2.setText(((GoSleepActivity)getActivity()).co2);
                         distance.setText(((GoSleepActivity)getActivity()).dist);
