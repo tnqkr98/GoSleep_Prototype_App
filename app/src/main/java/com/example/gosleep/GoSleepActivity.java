@@ -3,45 +3,38 @@ package com.example.gosleep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.IntentCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
-import app.akexorcist.bluetotohspp.library.DeviceList;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 public class GoSleepActivity extends AppCompatActivity {
-
     // 블루투스 자동페어링
     BluetoothSPP bt;
     BluetoothAdapter mBluetoothAdapter;
@@ -56,7 +49,6 @@ public class GoSleepActivity extends AppCompatActivity {
 
     MyBroadcastReceiver receiver;
 
-    static final int MODE_2 = 2, MODE_3 = 3, MODE_4 = 4, MODE_5 = 5, MODE_6 = 6;
     public int current_mode = 2, moduleControlCMD =0;
     public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000", cds="0 lux";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
@@ -90,6 +82,11 @@ public class GoSleepActivity extends AppCompatActivity {
 
     SharedPreferences.Editor editor;
     SharedPreferences pref;
+
+    // network
+    private NetworkAPI service;
+    private int past_mode = 2;
+    private String product_id = "NYX-";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,13 +171,10 @@ public class GoSleepActivity extends AppCompatActivity {
                         hum = array[0].concat(" %");
                         tem = array[1].concat("°C");
                         fanspeed = array[2];
-                        if (array.length > 4) {   // uno test
-                            co2 = array[4].concat(" ppm");
-                            dist = array[5].concat(" cm");
-                            cds = array[6].concat(" lux");
-                        }
-
                         current_mode = Integer.parseInt(array[3]);
+                        co2 = array[4].concat(" ppm");
+                        dist = array[5].concat(" cm");
+                        cds = array[6].concat(" lux");
 
                         // 쓰레드 없이 프레그먼트 조작
                         MoodFragment mf = (MoodFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 1);
@@ -191,6 +185,18 @@ public class GoSleepActivity extends AppCompatActivity {
                             mf.lightonoff.setChecked(true);
                            moodLEDon = true;
                         }
+
+                        // 수면 시작 시간 서버에 기록
+                        try {
+                            if (past_mode == 3 && current_mode == 4) {
+                                // POST request
+                                startRequest(new ReqData(product_id, "android", "Sleep Mode"));
+                            }
+                            past_mode = current_mode;
+                        }catch (Exception e){
+                            Log.d("dddd",e.getMessage()+"서버 POST 요청 오류!!");
+                        }
+                        past_mode = current_mode;
                         //Log.d("dddd", "분석 >> 습도 : " + hum + " 온도 :" + tem + "  팬 속도 : " + fanspeed + "  현재 고슬립 모드 :" + current_mode);
                     }
                 }catch (Exception e){
@@ -208,7 +214,8 @@ public class GoSleepActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 task_doing = false;
                 pairingOn = true;
-                Toast.makeText(getApplicationContext(),"GoSleep : Connected to " + name, Toast.LENGTH_SHORT).show();
+                product_id+=name.substring(7,14);
+                Toast.makeText(getApplicationContext(),"GoSleep : Connected to " + product_id, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -244,6 +251,9 @@ public class GoSleepActivity extends AppCompatActivity {
         });
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+
+        service = NetworkClient.getClient().create(NetworkAPI.class);   // REST API
+
         /* 비페어링된 기기 탐색을 위한 브로드캐스트리시버 */
         // 등록되지 않은 기기 탐색을 위해
         /*unBondedDeviceList = new HashMap<>();
@@ -403,8 +413,7 @@ public class GoSleepActivity extends AppCompatActivity {
                                     Log.d("dddd", "디바이스 발견 " + device.getName() + "," + device.getAddress());
                                     try {
                                         Thread.sleep(2000);
-                                    } catch (Exception e) {
-                                    }
+                                    } catch (Exception e) { }
                                     break;
                                 }
                             }
@@ -439,5 +448,46 @@ public class GoSleepActivity extends AppCompatActivity {
             }
         };
         thread.start();
+    }
+
+    // Network
+    private void startRequest(ReqData data){
+        service.callData(data).enqueue(new Callback<ResData>() {
+            @Override
+            public void onResponse(Call<ResData> call, Response<ResData> response) {
+                ResData result = response.body();
+                //textView.setText(result.getBottle_id());
+                Toast.makeText(GoSleepActivity.this,"Server Msg : "+result.getCode(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ResData> call, Throwable t) {
+                Toast.makeText(GoSleepActivity.this, "Server Msg : Client Error", Toast.LENGTH_SHORT).show();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public class ReqData{
+        @SerializedName("Product_id")
+        String Product_id;
+        @SerializedName("User_id")
+        String User_id;
+        @SerializedName("Product_mode")
+        String Product_mode;
+
+        public ReqData(String product_id, String user_id, String product_mode) {
+            Product_id = product_id;
+            User_id = user_id;
+            Product_mode = product_mode;
+        }
+    }
+
+    public class ResData{
+        @SerializedName("code")
+        String code;
+
+        public ResData(String code) { this.code = code; }
+        public String getCode() { return code;}
     }
 }
