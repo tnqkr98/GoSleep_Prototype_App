@@ -214,6 +214,7 @@ public class GoSleepActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 task_doing = false;
                 pairingOn = true;
+                product_id = "NYX-";
                 product_id+=name.substring(7,14);
                 Toast.makeText(getApplicationContext(),"GoSleep : Connected to " + product_id, Toast.LENGTH_LONG).show();
             }
