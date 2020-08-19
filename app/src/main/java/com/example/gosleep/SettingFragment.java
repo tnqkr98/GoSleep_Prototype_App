@@ -68,23 +68,20 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(View view) {
                     switch(view.getId()){
+                        case R.id.radioButton1:
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 60, true);
+                            break;
                         case R.id.radioButton2:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 80, true);  // 4.5v  약
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 80, true);
                             break;
                         case R.id.radioButton3:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 100, true);  //  5v   중
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 100, true);
                             break;
                         case R.id.radioButton4:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 120, true); //  5.5v   강
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 120, true);
                             break;
-                        case R.id.radioButton5:
-                            //((GoSleepActivity) getActivity()).bt.send("vs" + 80, true);  // 4.5v  약
-                            break;
-                        case R.id.radioButton6:
-                            //((GoSleepActivity) getActivity()).bt.send("vs" + 100, true);  //  5v   중
-                            break;
-                        case R.id.radioButton7:
-                            //((GoSleepActivity) getActivity()).bt.send("vs" + 120, true); //  5.5v   강
+                        case R.id.radioButton8:
+                            ((GoSleepActivity) getActivity()).bt.send("vs" + 140, true);  // 4.5v  약
                             break;
                     }
             }
@@ -108,7 +105,6 @@ public class SettingFragment extends Fragment {
 
         r7= (RadioButton)view.findViewById(R.id.radioButton7);
         r7.setOnClickListener(radioButtonClickListener);
-
 
         long now = System.currentTimeMillis();
         dateFormat = new SimpleDateFormat("yyyyMMddHHmm");

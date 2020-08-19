@@ -48,7 +48,7 @@
         android:id="@+id/bluetooth"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:tint="#00f"
+        android:tint="#444444"
         android:src="@android:drawable/stat_sys_data_bluetooth"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="@+id/textView5"
@@ -66,4 +66,30 @@
         app:layout_constraintHorizontal_bias="0.05"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="25dp"
+        app:layout_constraintEnd_toStartOf="@+id/bluetooth"
+        app:layout_constraintTop_toTopOf="@+id/textView5">
+
+        <TextView
+            android:id="@+id/finding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10dp"
+            android:text="finding" />
+
+        <TextView
+            android:id="@+id/progress_text"
+            android:layout_width="20dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="10dp"
+            android:text=" . . ." />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

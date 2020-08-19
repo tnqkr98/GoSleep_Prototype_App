@@ -22,10 +22,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,6 +52,12 @@ public class GoSleepActivity extends AppCompatActivity {
     static HashMap<String,String> unBondedDeviceList;
     ProgressDialog progressDialog;
     static boolean unbindDiscovering  = false;
+    private static Handler mHandler;
+
+    private ImageView img_bluetooth;
+    private LinearLayout progress_layout;
+    private TextView progress_text;
+    private int loading_num = 0;
 
     MyBroadcastReceiver receiver;
 
@@ -111,7 +123,6 @@ public class GoSleepActivity extends AppCompatActivity {
         adapter.AddFragment(new DeveloperFragment(),"develop");
         fragmentTransaction.commit();
         viewPager.setAdapter(adapter);
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
@@ -137,7 +148,6 @@ public class GoSleepActivity extends AppCompatActivity {
             //finish();
         }
         goSleepIntent = new Intent(getApplicationContext(),GoSleepService.class);
-
         bt.setOnDataReceivedListener(new BluetoothSPP.OnDataReceivedListener() {
             @Override
             public void onDataReceived(byte[] data, String message) {
@@ -214,8 +224,10 @@ public class GoSleepActivity extends AppCompatActivity {
                 progressDialog.dismiss();
                 task_doing = false;
                 pairingOn = true;
-                product_id = "NYX-";
-                product_id+=name.substring(7,14);
+                product_id = "NYX-"+name.substring(7,14);
+
+                img_bluetooth.setColorFilter(Color.argb(255, 0, 0, 255));
+                progress_layout.setVisibility(View.INVISIBLE);
                 Toast.makeText(getApplicationContext(),"GoSleep : Connected to " + product_id, Toast.LENGTH_LONG).show();
             }
 
@@ -225,8 +237,11 @@ public class GoSleepActivity extends AppCompatActivity {
                 pairingOn = false;
 
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
-                if(!pairingOn && !task_doing)
+                if(!pairingOn && !task_doing) {
+                    img_bluetooth.setColorFilter(Color.argb(255, 68, 68, 68));
+                    progress_layout.setVisibility(View.VISIBLE);
                     newConnectGoSleep();
+                }
             }
 
             @Override
@@ -234,13 +249,17 @@ public class GoSleepActivity extends AppCompatActivity {
                 Log.d("dddd","Activity: onDeviceConnectionFailed");
                 pairingOn = false;
                 stopService(goSleepIntent); // 포그라운드 서비스 중단
-                if(!pairingOn && !task_doing)
+                if(!pairingOn && !task_doing) {
+                    img_bluetooth.setColorFilter(Color.argb(255, 68, 68, 68));
+                    progress_layout.setVisibility(View.VISIBLE);
                     newConnectGoSleep();
+                }
             }
         });
 
-        ImageView btnConnect = (ImageView)findViewById(R.id.bluetooth);
-
+        img_bluetooth = (ImageView)findViewById(R.id.bluetooth);
+        progress_layout = (LinearLayout)findViewById(R.id.progress_layout);
+        progress_text = (TextView)findViewById(R.id.progress_text);
         Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {       // 비정상 종료 핸들러( 사용자가 블루투스 강종시 동작)
             @Override
             public void uncaughtException(@NonNull Thread t, @NonNull Throwable e) {
@@ -250,6 +269,23 @@ public class GoSleepActivity extends AppCompatActivity {
                 System.exit(10);
             }
         });
+
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(@NonNull Message msg) {       // MainThread View control
+                if (msg.what == 0) {
+                    if (loading_num == 0)
+                        progress_text.setText("");
+                    else if (loading_num == 1)
+                        progress_text.setText(" .");
+                    else if (loading_num == 2)
+                        progress_text.setText(" . .");
+                    else if (loading_num == 3)
+                        progress_text.setText(" . . .");
+                    if (loading_num++ == 3) loading_num = 0;
+                }
+            }
+        };
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -391,14 +427,15 @@ public class GoSleepActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(GoSleepActivity.this);
         progressDialog.setMessage("Find GoSleep....");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
 
         Thread thread = new Thread(){
             @Override
             public void run() {
-                for(int i=0;i<500;i++){
+                for(int i=0;i<50000;i++){
+                    mHandler.sendEmptyMessage(0);
                     if(!pairingOn) {
                         Log.d("dddd", "connectThread() run() i:" + i);
                         task_doing = true;
@@ -420,26 +457,26 @@ public class GoSleepActivity extends AppCompatActivity {
                             }
                         }
                         // 페어링되지 않은 집합에서 찾기(될까? 된다. Android 8.0 이하만;)
-                    /*if(!unbindDiscovering){
-                        mBluetoothAdapter.cancelDiscovery();
-                        mBluetoothAdapter.startDiscovery();
-                    }*/
+                        /*if(!unbindDiscovering){
+                            mBluetoothAdapter.cancelDiscovery();
+                            mBluetoothAdapter.startDiscovery();
+                        }*/
 
-                    /*for(String device : unBondedDeviceList.keySet()){
-                        if(device!=null && device.substring(0,6).equals(GOSLEEP_DEVICE_ID)){
-                            bt.connect(unBondedDeviceList.get(GOSLEEP_DEVICE_ID));
-                            try { Thread.sleep(1000); } catch (Exception e) { }
-                        }
-                    }*/
+                        /*for(String device : unBondedDeviceList.keySet()){
+                            if(device!=null && device.substring(0,6).equals(GOSLEEP_DEVICE_ID)){
+                                bt.connect(unBondedDeviceList.get(GOSLEEP_DEVICE_ID));
+                                try { Thread.sleep(1000); } catch (Exception e) { }
+                            }
+                        }*/
 
-                    /*if(pairingOn) {
-                        startService(goSleepIntent);     // 포그라운드 서비스 시작.
-                        bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
-                        progressDialog.dismiss();
-                        //mBluetoothAdapter.cancelDiscovery(); // 계속 시작되어있으면 대역폭감소유발 (BroadCast 관련)
-                        task_doing = false;
-                        break;
-                    }*/
+                        /*if(pairingOn) {
+                            startService(goSleepIntent);     // 포그라운드 서비스 시작.
+                            bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
+                            progressDialog.dismiss();
+                            //mBluetoothAdapter.cancelDiscovery(); // 계속 시작되어있으면 대역폭감소유발 (BroadCast 관련)
+                            task_doing = false;
+                            break;
+                        }*/
                         try {
                             Thread.sleep(1000);
                         } catch (Exception e) {
