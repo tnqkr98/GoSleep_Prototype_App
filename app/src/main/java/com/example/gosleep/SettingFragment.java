@@ -69,19 +69,19 @@ public class SettingFragment extends Fragment {
             public void onClick(View view) {
                     switch(view.getId()){
                         case R.id.radioButton1:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 60, true);
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 80, true);
                             break;
                         case R.id.radioButton2:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 80, true);
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 90, true);
                             break;
                         case R.id.radioButton3:
                             ((GoSleepActivity) getActivity()).bt.send("fs" + 100, true);
                             break;
                         case R.id.radioButton4:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 120, true);
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 110, true);
                             break;
                         case R.id.radioButton8:
-                            ((GoSleepActivity) getActivity()).bt.send("vs" + 140, true);  // 4.5v  약
+                            ((GoSleepActivity) getActivity()).bt.send("vs" + 120, true);  // 4.5v  약
                             break;
                     }
             }

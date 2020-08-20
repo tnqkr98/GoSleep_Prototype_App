@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.example.gosleep"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -27,6 +28,9 @@ dependencies {
     implementation 'com.larswerkman:HoloColorPicker:1.5' // Color picker
     implementation 'com.squareup.retrofit2:retrofit:2.4.0' // REST API
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0' // REST API json parser
+    implementation 'com.google.firebase:firebase-analytics:17.5.0' // Firebase SDK
+    implementation 'com.google.firebase:firebase-messaging:20.2.4' // FCM
+    
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'

@@ -13,6 +13,7 @@ import retrofit2.Response;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -23,18 +24,24 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.HashMap;
@@ -291,6 +298,19 @@ public class GoSleepActivity extends AppCompatActivity {
 
         service = NetworkClient.getClient().create(NetworkAPI.class);   // REST API
 
+        // FCM
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if(!task.isSuccessful()){
+                            Log.w("dddd","getInstanceId failed",task.getException());
+                            return;
+                        }
+                        String token = task.getResult().getToken();
+                        Log.d("FCM Log","FCM 토큰 : "+token);
+                    }
+                });
         /* 비페어링된 기기 탐색을 위한 브로드캐스트리시버 */
         // 등록되지 않은 기기 탐색을 위해
         /*unBondedDeviceList = new HashMap<>();
@@ -435,8 +455,8 @@ public class GoSleepActivity extends AppCompatActivity {
             @Override
             public void run() {
                 for(int i=0;i<50000;i++){
-                    mHandler.sendEmptyMessage(0);
                     if(!pairingOn) {
+                        mHandler.sendEmptyMessage(0);
                         Log.d("dddd", "connectThread() run() i:" + i);
                         task_doing = true;
                         // 페어링된(Bonded) 기기집합에서 먼저 찾기
@@ -486,6 +506,28 @@ public class GoSleepActivity extends AppCompatActivity {
             }
         };
         thread.start();
+    }
+
+    public void onQuestionClick(View v){
+        View dlgView = View.inflate(this, R.layout.dialog_question,null);
+        final Dialog dlg = new Dialog(this);
+        dlg.setContentView(dlgView);
+        dlg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Button before, after;
+        before = (Button)dlgView.findViewById(R.id.bt_before);
+        after = (Button)dlgView.findViewById(R.id.bt_after);
+
+        before.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dlg.cancel();
+                Intent intent = new Intent(getApplicationContext(),QuestionBeforeSleepActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        dlg.show();
     }
 
     // Network

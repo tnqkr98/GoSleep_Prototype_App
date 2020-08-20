@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "777437136295",
+    "firebase_url": "https://gosleepmsg.firebaseio.com",
+    "project_id": "gosleepmsg",
+    "storage_bucket": "gosleepmsg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:777437136295:android:7400bf146ff34eb0eda282",
+        "android_client_info": {
+          "package_name": "com.example.gosleep"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "777437136295-g6ekb782bmcfja83sgbbp9t3mcjkl0u2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gosleep",
+            "certificate_hash": "c44ed9c5b9afba46ec8b31e10fbddcc743c11187"
+          }
+        },
+        {
+          "client_id": "777437136295-87gep9c2ieta0br8setg0lnok5lgqvjk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgaRxjVJ8Tp6yrVRwmr8z_IUNXVqpqm4c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "777437136295-87gep9c2ieta0br8setg0lnok5lgqvjk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
