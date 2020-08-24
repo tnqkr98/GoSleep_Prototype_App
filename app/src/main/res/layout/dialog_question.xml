@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:textSize="15dp"
-            android:backgroundTint="#666"
+            android:backgroundTint="#006"
             android:textStyle="bold"
             android:text="수면 전 설문" />
 
@@ -45,7 +45,7 @@
             android:background="@drawable/bt_type1"
             android:textSize="15dp"
             android:textStyle="bold"
-            android:backgroundTint="#666"
+            android:backgroundTint="#600"
             android:text="수면 후 설문" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

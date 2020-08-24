@@ -12,8 +12,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -44,6 +46,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -106,6 +109,7 @@ public class GoSleepActivity extends AppCompatActivity {
     private NetworkAPI service;
     private int past_mode = 2;
     private String product_id = "NYX-";
+    private String regId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -311,6 +315,8 @@ public class GoSleepActivity extends AppCompatActivity {
                         Log.d("FCM Log","FCM 토큰 : "+token);
                     }
                 });
+        regId = FirebaseInstanceId.getInstance().getToken();
+        Log.d("dddd","regId : "+regId);
         /* 비페어링된 기기 탐색을 위한 브로드캐스트리시버 */
         // 등록되지 않은 기기 탐색을 위해
         /*unBondedDeviceList = new HashMap<>();
