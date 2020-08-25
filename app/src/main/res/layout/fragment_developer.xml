@@ -126,7 +126,7 @@
         android:background="@drawable/bt_type1"
         android:backgroundTint="#555"
         android:padding="3dp"
-        android:text="  Velve Setting  "
+        android:text="  Valve Setting  "
         android:textColor="#fff"
         android:textSize="15dp" />
 

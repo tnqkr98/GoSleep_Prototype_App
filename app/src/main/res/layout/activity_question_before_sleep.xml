@@ -9,37 +9,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_margin="15dp"
+        android:background="#444"
         android:orientation="vertical"
-        android:background="@drawable/bt_type1"
-        android:layout_margin="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView">
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_margin="15dp"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="수면 전 설문지" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="match_parent"
-            android:layout_marginLeft="15dp"
-            android:layout_height="wrap_content"
-            android:text="수면 분석을 위한 조사입니다. 정확히 체크해주세요." />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="15dp"
-            android:background="#1287cf"
-            android:text="" />
+        app:layout_constraintTop_toBottomOf="@+id/textView15">
 
         <ScrollView
             android:id="@+id/scrollView2"
@@ -50,7 +26,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -92,8 +68,9 @@
                     android:id="@+id/textView21"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="11dp"
-                    android:text="활동한 날을 기준으로 함.\n예) 8월 15일에 22시에 잠들었다 -> 8/15 기재\n      8월 15일에서 넘어가 새벽에 잠들었다 -> 8/15 기재" />
+                    android:layout_marginTop="5dp"
+                    android:text="활동한 날을 기준으로 함.\n예) 8월 15일에 22시에 잠들었다 -> 8/15 기재\n      8월 15일에서 넘어가 새벽에 잠들었다 -> 8/15 기재"
+                    android:textSize="11dp" />
 
                 <LinearLayout
                     android:layout_width="100dp"
@@ -237,22 +214,42 @@
 
                 <Button
                     android:id="@+id/button"
-                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     android:text="제출" />
 
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/imageView"
+    <TextView
+        android:id="@+id/textView7"
         android:layout_width="match_parent"
-        android:layout_height="98dp"
+        android:layout_height="50dp"
+        android:text="         Questionair Before Sleep"
+        android:gravity="center_vertical"
+        android:padding="5dp"
+        android:layout_marginBottom="21dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:background="#555"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/cap" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="15dp"
+        android:text="수면 분석을 위한 조사입니다. 정확히 체크해주세요."
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
