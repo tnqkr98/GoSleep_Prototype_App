@@ -143,6 +143,14 @@ public class DeveloperFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.d("dddd","developer fragemnt onResume() call");
+        if(((GoSleepActivity)getActivity()).fanOn) fanSwit.setChecked(true);
+        else fanSwit.setChecked(false);
+
+        if(((GoSleepActivity)getActivity()).heatOn) heatSwit.setChecked(true);
+        else heatSwit.setChecked(false);
+
+        if(((GoSleepActivity)getActivity()).velveOn) velveSwit.setChecked(true);
+        else velveSwit.setChecked(false);
     }
 
     private class ArduinoThread extends Thread{

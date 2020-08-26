@@ -452,7 +452,7 @@ public class GoSleepActivity extends AppCompatActivity {
         //mBluetoothAdapter.startDiscovery();
 
         progressDialog = new ProgressDialog(GoSleepActivity.this);
-        progressDialog.setMessage("Find GoSleep....");
+        progressDialog.setMessage("Find gosleep....");
         progressDialog.setCancelable(true);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();

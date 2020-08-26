@@ -40,7 +40,7 @@ public class GoSleepService extends Service {
             builder = new NotificationCompat.Builder(this);
 
         builder.setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("GoSleep").setContentText("현재 GoSleep 기기와 앱이 연동 상태입니다.");
+                .setContentTitle("gosleep").setContentText("현재 GoSleep 기기와 앱이 연동 상태입니다.");
                 //.setContentIntent(pendingIntent);
         startForeground(1,builder.build());
 

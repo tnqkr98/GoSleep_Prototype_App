@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_top"
-        android:text="GoSleep"
+        android:text="gosleep"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="20dp"

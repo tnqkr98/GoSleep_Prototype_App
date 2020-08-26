@@ -39,7 +39,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="1) 이름"
-                        android:textSize="20dp"
+                        android:textSize="22dp"
                         android:textStyle="bold" />
 
                     <EditText
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="2) 날짜"
-                    android:textSize="20dp"
+                    android:textSize="22dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -70,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:text="활동한 날을 기준으로 함.\n예) 8월 15일에 22시에 잠들었다 -> 8/15 기재\n      8월 15일에서 넘어가 새벽에 잠들었다 -> 8/15 기재"
-                    android:textSize="11dp" />
+                    android:textSize="12dp" />
 
                 <LinearLayout
                     android:layout_width="100dp"
@@ -121,9 +121,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="20dp"
                     android:text="3) 오늘의 활동 사항(다중 체크)"
-                    android:textSize="20dp"
+                    android:textSize="22dp"
                     android:textStyle="bold" />
 
                 <LinearLayout
@@ -141,36 +141,42 @@
                             android:id="@+id/checkBox3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="없음" />
 
                         <CheckBox
                             android:id="@+id/checkBox4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="음주" />
 
                         <CheckBox
                             android:id="@+id/checkBox"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="카페인 섭취(18시 이후)" />
 
                         <CheckBox
                             android:id="@+id/checkBox2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="낮잠" />
 
                         <CheckBox
                             android:id="@+id/checkBox5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="야식 섭취" />
 
                         <CheckBox
                             android:id="@+id/checkBox6"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="생리 기간" />
                     </LinearLayout>
 
@@ -184,28 +190,33 @@
                             android:id="@+id/checkBox7"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="두통" />
 
                         <CheckBox
                             android:id="@+id/checkBox8"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="목욕" />
 
                         <CheckBox
                             android:id="@+id/checkBox9"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:textSize="17dp"
                             android:text="수면제 복용" />
 
                         <CheckBox
                             android:id="@+id/checkBox10"
+                            android:textSize="17dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="스트레스 받음" />
 
                         <CheckBox
                             android:id="@+id/checkBox11"
+                            android:textSize="17dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="운동" />
@@ -216,7 +227,7 @@
                     android:id="@+id/button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="30dp"
                     android:text="제출" />
 
             </LinearLayout>
@@ -251,5 +262,16 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+    <ImageView
+        android:id="@+id/back_bt"
+        android:layout_width="33dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/homeAsUpIndicator" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
