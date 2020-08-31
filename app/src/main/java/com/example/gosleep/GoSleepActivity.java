@@ -232,6 +232,8 @@ public class GoSleepActivity extends AppCompatActivity {
                 Log.d("dddd","Activity: onDeviceConnected");
                 startService(goSleepIntent);     // 포그라운드 서비스 시작.
                 bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
+                //T1605091300002 (2016년 5월 9일 13시 00분 00초 월요일)
+                //bt.send("T20")
                 progressDialog.dismiss();
                 task_doing = false;
                 pairingOn = true;
@@ -239,7 +241,7 @@ public class GoSleepActivity extends AppCompatActivity {
 
                 img_bluetooth.setColorFilter(Color.argb(255, 0, 0, 255));
                 progress_layout.setVisibility(View.INVISIBLE);
-                Toast.makeText(getApplicationContext(),"GoSleep : Connected to " + product_id, Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"gosleep : Connected to " + product_id, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -468,6 +470,7 @@ public class GoSleepActivity extends AppCompatActivity {
                         // 페어링된(Bonded) 기기집합에서 먼저 찾기
                         mPairedDevices = mBluetoothAdapter.getBondedDevices();
                         for (BluetoothDevice device : mPairedDevices) {
+                            if(device.getName().length() < 7) continue;
                             Log.d("dddd", "device name : " + device.getName().substring(0, 7));
                             if (device.getName().substring(0, 7).equals(GOSLEEP_DEVICE_ID)) {
                                 goSleepMacAddress = device.getAddress();

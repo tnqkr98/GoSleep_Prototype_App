@@ -47,6 +47,7 @@ public class FCMService extends FirebaseMessagingService {
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+            //remoteMessage.getData().get();
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                 String channelName = "Channel Name";
                 NotificationChannel channel = new NotificationChannel(channelId,channelName,NotificationManager.IMPORTANCE_HIGH);
