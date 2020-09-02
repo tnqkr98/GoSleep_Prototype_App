@@ -143,6 +143,47 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="  Valve Input (1~255) : "
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/et_valveinput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:ems="2"
+                android:gravity="center"
+                android:hint="0"
+                android:inputType="numberDecimal"
+                android:textColorHint="#666"
+                android:textSize="25dp" />
+
+            <Button
+                android:id="@+id/bt_valveset"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/bt_type2"
+                android:backgroundTint="#333"
+                android:text="Set" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="10dp">

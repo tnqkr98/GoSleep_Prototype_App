@@ -59,8 +59,7 @@ public class SettingFragment extends Fragment {
         lastSetTime = (TextView)view.findViewById(R.id.lastset);
         lastSetTime.setText(pref.getString("savedAlarm","Last Set Time : None"));
 
-        eHour = (EditText)view.findViewById(R.id.hour);
-        eMin = (EditText)view.findViewById(R.id.min);
+        eHour = (EditText)view.findViewById(R.id.hour);        eMin = (EditText)view.findViewById(R.id.min);
         //eDay = (EditText)view.findViewById(R.id.day);
         //eMonth = (EditText)view.findViewById(R.id.month);
 
@@ -81,7 +80,7 @@ public class SettingFragment extends Fragment {
                             ((GoSleepActivity) getActivity()).bt.send("fs" + 110, true);
                             break;
                         case R.id.radioButton8:
-                            ((GoSleepActivity) getActivity()).bt.send("vs" + 120, true);  // 4.5v  약
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 120, true);  // 4.5v  약
                             break;
                     }
             }

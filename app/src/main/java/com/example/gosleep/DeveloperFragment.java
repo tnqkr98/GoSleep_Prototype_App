@@ -22,8 +22,8 @@ import androidx.fragment.app.Fragment;
 public class DeveloperFragment extends Fragment {
     View view;
     Switch velveSwit,fanSwit,heatSwit;
-    Button fanButton,zpButton;
-    EditText eFan;
+    Button fanButton,zpButton,bt_valveset;
+    EditText eFan,et_valveinput;
     TextView fanSpeed, distance, co2, illuminance;
 
     private static Handler mHandler;
@@ -52,7 +52,7 @@ public class DeveloperFragment extends Fragment {
         fanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int speed = 100;
+                int speed;
                 if(!eFan.getText().toString().isEmpty()) {
                     speed = Integer.parseInt(eFan.getText().toString());
                     if (speed < 10)
@@ -61,6 +61,26 @@ public class DeveloperFragment extends Fragment {
                         ((GoSleepActivity) getActivity()).bt.send("fs0" + speed, true);
                     else if (speed <256)
                         ((GoSleepActivity) getActivity()).bt.send("fs" + speed, true);
+                }
+                else
+                    Toast.makeText(view.getContext(),"값을 입력하시오",Toast.LENGTH_SHORT);
+            }
+        });
+
+        et_valveinput = (EditText)view.findViewById(R.id.et_valveinput);
+        bt_valveset = (Button)view.findViewById(R.id.bt_valveset);
+        bt_valveset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int speed;
+                if(!et_valveinput.getText().toString().isEmpty()) {
+                    speed = Integer.parseInt(et_valveinput.getText().toString());
+                    if (speed < 10)
+                        ((GoSleepActivity) getActivity()).bt.send("vs00" + speed, true);
+                    else if (speed >= 10 && speed < 100)
+                        ((GoSleepActivity) getActivity()).bt.send("vs0" + speed, true);
+                    else if (speed <256)
+                        ((GoSleepActivity) getActivity()).bt.send("vs" + speed, true);
                 }
                 else
                     Toast.makeText(view.getContext(),"값을 입력하시오",Toast.LENGTH_SHORT);
