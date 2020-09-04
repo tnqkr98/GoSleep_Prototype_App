@@ -46,7 +46,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -231,9 +233,24 @@ public class GoSleepActivity extends AppCompatActivity {
             public void onDeviceConnected(String name, String address) {
                 Log.d("dddd","Activity: onDeviceConnected");
                 startService(goSleepIntent);     // 포그라운드 서비스 시작.
-                bt.send("r",true);   // 재연결 시 아두이노 상황 동기화 요청
+
                 //T1605091300002 (2016년 5월 9일 13시 00분 00초 월요일)
                 //bt.send("T20")
+
+                long now = System.currentTimeMillis();
+                Date dateNow = new Date(now);
+
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+                String syncTime = dateFormat.format(dateNow);
+
+                Calendar cal = Calendar.getInstance() ;
+                cal.setTime(dateNow);
+                int dayNum = cal.get(Calendar.DAY_OF_WEEK);
+
+                //bt.send("r"+syncTime+""+dayNum,true);   // 제품 시간 동기화 (체크섬 전송필요)
+                bt.send("r",true);
+                Log.d("dddd","r"+syncTime+""+dayNum);
+
                 progressDialog.dismiss();
                 task_doing = false;
                 pairingOn = true;

@@ -164,6 +164,7 @@
                 android:ems="2"
                 android:gravity="center"
                 android:hint="0"
+                android:text="255"
                 android:inputType="numberDecimal"
                 android:textColorHint="#666"
                 android:textSize="25dp" />
