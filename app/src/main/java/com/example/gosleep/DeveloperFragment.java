@@ -22,13 +22,13 @@ import androidx.fragment.app.Fragment;
 public class DeveloperFragment extends Fragment {
     View view;
     Switch velveSwit,fanSwit,heatSwit;
-    Button fanButton,zpButton,bt_valveset;
+    Button fanButton,zpButton,bt_valveset,fanONOFF,valveONOFF;
     EditText eFan,et_valveinput;
     TextView fanSpeed, distance, co2, illuminance;
 
     private static Handler mHandler;
     ArduinoThread thread;
-
+    private int ttt=0;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         thread = new ArduinoThread();
@@ -88,35 +88,32 @@ public class DeveloperFragment extends Fragment {
         });
 
         velveSwit = (Switch)view.findViewById(R.id.velve_switch);
-        velveSwit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(velveSwit.isChecked())
-                    ((GoSleepActivity) getActivity()).bt.send("v1", true);
-                else
-                    ((GoSleepActivity) getActivity()).bt.send("v0", true);
-            }
-        });
-
+        velveSwit.setClickable(false);
         fanSwit = (Switch)view.findViewById(R.id.fan_switch);
-        fanSwit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(fanSwit.isChecked())
-                    ((GoSleepActivity) getActivity()).bt.send("f1", true);
-                else
-                    ((GoSleepActivity) getActivity()).bt.send("f0", true);
-            }
-        });
+        fanSwit.setClickable(false);
 
         heatSwit = (Switch)view.findViewById(R.id.heat_switch);
-        heatSwit.setOnClickListener(new View.OnClickListener() {
+
+        fanONOFF = (Button)view.findViewById(R.id.bt_fanonoff);
+        fanONOFF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(heatSwit.isChecked())
-                    ((GoSleepActivity)getActivity()).bt.send("h1", true);
+                Toast.makeText(getContext(),"신호를 발송하였습니다. 잠시 기다려주세요.",Toast.LENGTH_LONG);
+                if(((GoSleepActivity) getActivity()).fanOn)
+                    ((GoSleepActivity) getActivity()).bt.send("f0", true);
                 else
-                    ((GoSleepActivity)getActivity()).bt.send("h0", true);
+                    ((GoSleepActivity) getActivity()).bt.send("f1", true);
+            }
+        });
+        valveONOFF = (Button)view.findViewById(R.id.bt_valveonoff);
+        valveONOFF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"신호를 발송하였습니다. 잠시 기다려주세요.",Toast.LENGTH_LONG);
+                if(((GoSleepActivity) getActivity()).velveOn)
+                    ((GoSleepActivity) getActivity()).bt.send("v0", true);
+                else
+                    ((GoSleepActivity) getActivity()).bt.send("v1", true);
             }
         });
 
@@ -132,27 +129,25 @@ public class DeveloperFragment extends Fragment {
         mHandler = new Handler(){
             @Override
             public void handleMessage(@NonNull Message msg) {
-                try {
-                    if (msg.what == 0) {
-                        fanSpeed.setText(((GoSleepActivity) getActivity()).fanspeed);
-                        co2.setText(((GoSleepActivity)getActivity()).co2);
-                        distance.setText(((GoSleepActivity)getActivity()).dist);
-                        illuminance.setText(((GoSleepActivity)getActivity()).cds);
+                if (msg.what == 0) {
+                    fanSpeed.setText(((GoSleepActivity) getActivity()).fanspeed);
+                    co2.setText(((GoSleepActivity) getActivity()).co2);
+                    distance.setText(((GoSleepActivity) getActivity()).dist);
+                    illuminance.setText(((GoSleepActivity) getActivity()).cds);
+                    ttt++;
+                    if (ttt > 5) { // ui 반영 주기
+                        ttt = 0;
+                        if (((GoSleepActivity) getActivity()).fanOn) fanSwit.setChecked(true);
+                        else fanSwit.setChecked(false);
 
-                        if (((GoSleepActivity)getActivity()).moduleControlCMD > 0) {
-                            if(((GoSleepActivity)getActivity()).fanOn) fanSwit.setChecked(true);
-                            else fanSwit.setChecked(false);
+                        if (((GoSleepActivity) getActivity()).heatOn) heatSwit.setChecked(true);
+                        else heatSwit.setChecked(false);
 
-                            if(((GoSleepActivity)getActivity()).heatOn) heatSwit.setChecked(true);
-                            else heatSwit.setChecked(false);
-
-                            if(((GoSleepActivity)getActivity()).velveOn) velveSwit.setChecked(true);
-                            else velveSwit.setChecked(false);
-
-                            ((GoSleepActivity)getActivity()).moduleControlCMD--;
-                        }
+                        if (((GoSleepActivity) getActivity()).velveOn)
+                            velveSwit.setChecked(true);
+                        else velveSwit.setChecked(false);
                     }
-                }catch (Exception e){}
+                }
             }
         };
 

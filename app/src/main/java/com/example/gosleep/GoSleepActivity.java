@@ -46,11 +46,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.gson.annotations.SerializedName;
 
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.zip.CRC32;
 
 public class GoSleepActivity extends AppCompatActivity {
     // 블루투스 자동페어링
@@ -73,9 +75,10 @@ public class GoSleepActivity extends AppCompatActivity {
 
     MyBroadcastReceiver receiver;
 
-    public int current_mode = 2, moduleControlCMD =0;
+    public int current_mode = 2;
     public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000", cds="0 lux";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
+
     public boolean velveOn = false, heatOn = false, fanOn = false, moodLEDon = false;
 
     private BottomNavigationView navigation;
@@ -168,19 +171,7 @@ public class GoSleepActivity extends AppCompatActivity {
                 Log.d("dddd", "Receiving Data From Arduino : "+message);
                 String[] array = message.split(",");
                 try {
-                    if (array[0].equals("v")) {                     // 밸브 상황(on/off) 비동기 수신
-                        if (array[1].equals("1")) velveOn = true;
-                        else velveOn = false;
-                        moduleControlCMD++;
-                    } else if (array[0].equals("f")) {              // 팬 상황(on/off) 비동기 수신
-                        if (array[1].equals("1")) fanOn = true;
-                        else fanOn = false;
-                        moduleControlCMD++;
-                    } else if (array[0].equals("h")) {              // 열선 상황(on/off) 비동기 수신
-                        if (array[1].equals("1")) heatOn = true;
-                        else heatOn = false;
-                        moduleControlCMD++;
-                    } else if(array[0].equals("t")) {               // 설정된 알람 시간 동기화
+                    if(array[0].equals("t")) {               // 설정된 알람 시간 동기화
                         if(array[1].equals("n"))
                             editor.putString("savedAlarm","Last Set Time : None");
                         else {
@@ -198,6 +189,11 @@ public class GoSleepActivity extends AppCompatActivity {
                         co2 = array[4].concat(" ppm");
                         dist = array[5].concat(" cm");
                         cds = array[6].concat(" lux");
+
+                        if (array[7].equals("1")) fanOn = true;
+                        else fanOn = false;
+                        if (array[8].equals("1")) velveOn = true;
+                        else velveOn = false;
 
                         // 쓰레드 없이 프레그먼트 조작
                         MoodFragment mf = (MoodFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 1);
@@ -249,7 +245,16 @@ public class GoSleepActivity extends AppCompatActivity {
 
                 //bt.send("r"+syncTime+""+dayNum,true);   // 제품 시간 동기화 (체크섬 전송필요)
                 bt.send("r",true);
-                Log.d("dddd","r"+syncTime+""+dayNum);
+                //Log.d("dddd","r"+syncTime+""+dayNum);
+
+                // checksum 생성
+                String packet = "r2009101600243";
+                CRC32 checksum = new CRC32();
+                checksum.update(packet.getBytes());
+                byte[] bytepacket = packet.getBytes();
+                byte[] csum = ByteBuffer.allocate(8).putLong(checksum.getValue()).array();
+                ByteBuffer bf = ByteBuffer.wrap(bytepacket).put(csum);
+                //bt.send(bf.array(),true);
 
                 progressDialog.dismiss();
                 task_doing = false;

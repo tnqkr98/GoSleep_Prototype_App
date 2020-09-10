@@ -105,9 +105,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="  Fan Control (ON/OFF) : "
+                android:layout_weight="3"
+                android:text="  Fan Control  : "
                 android:textSize="14dp" />
+
+            <Button
+                android:id="@+id/bt_fanonoff"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bt_type2"
+                android:backgroundTint="#333"
+                android:text="ON/OFF" />
 
             <Switch
                 android:id="@+id/fan_switch"
@@ -192,9 +201,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="  Valve Control (ON/OFF) : "
+                android:layout_weight="3"
+                android:text="  Valve Control : "
                 android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/bt_valveonoff"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:background="@drawable/bt_type2"
+                android:backgroundTint="#333"
+                android:text="ON/OFF" />
 
             <Switch
                 android:id="@+id/velve_switch"

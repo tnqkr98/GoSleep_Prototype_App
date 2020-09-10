@@ -1,320 +1,324 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:background="#222"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:background="#222"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:backgroundTint="#555"
-        android:textSize="17dp"
-        android:textColor="#fff"
-        android:padding="3dp"
-        android:background="@drawable/bt_type1"
-        android:text="  Alarm Setting  " />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bt_type1"
-        android:layout_margin="5dp"
-        android:layout_marginBottom="20dp"
-        android:orientation="vertical">
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:backgroundTint="#555"
+            android:textSize="17dp"
+            android:textColor="#fff"
+            android:padding="3dp"
+            android:background="@drawable/bt_type1"
+            android:text="  Alarm Setting  " />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bt_type1"
             android:layout_margin="5dp"
-            android:orientation="horizontal"
-            android:padding="10dp">
-
-            <EditText
-                android:id="@+id/hour"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_weight="1"
-                android:ems="5"
-                android:gravity="center"
-                android:hint="00"
-                android:inputType="numberDecimal"
-                android:maxLength="2"
-                android:textColorHint="#666"
-                android:textSize="25dp" />
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:text="  :  "
-                android:textColor="#000"
-                android:textSize="25dp" />
-
-            <EditText
-                android:id="@+id/min"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="50dp"
-                android:layout_weight="1"
-                android:ems="5"
-                android:gravity="center"
-                android:hint="00"
-                android:inputType="number"
-                android:maxLength="2"
-                android:textColorHint="#666"
-                android:textSize="25dp" />
+            android:layout_marginBottom="20dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_margin="5dp"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
-                <Button
-                    android:id="@+id/setbt"
-                    android:layout_width="70dp"
+                <EditText
+                    android:id="@+id/hour"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bt_type2"
-                    android:backgroundTint="#090"
-                    android:text="Set" />
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:hint="00"
+                    android:inputType="numberDecimal"
+                    android:maxLength="2"
+                    android:textColorHint="#666"
+                    android:textSize="25dp" />
 
-                <Button
-                    android:id="@+id/resetbt"
-                    android:layout_width="70dp"
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:background="@drawable/bt_type2"
-                    android:backgroundTint="#900"
-                    android:text="Unset" />
+                    android:layout_weight="0"
+                    android:text="  :  "
+                    android:textColor="#000"
+                    android:textSize="25dp" />
+
+                <EditText
+                    android:id="@+id/min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="50dp"
+                    android:layout_weight="1"
+                    android:ems="5"
+                    android:gravity="center"
+                    android:hint="00"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:textColorHint="#666"
+                    android:textSize="25dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/setbt"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bt_type2"
+                        android:backgroundTint="#090"
+                        android:text="Set" />
+
+                    <Button
+                        android:id="@+id/resetbt"
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@drawable/bt_type2"
+                        android:backgroundTint="#900"
+                        android:text="Unset" />
+
+                </LinearLayout>
 
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/lastset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="20dp"
+                android:text="Last Setting Time :"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text=" ＃  Fan Speed  "
+                android:textColor="#999"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <RadioGroup
+                android:id="@+id/rg3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Very Low"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Low"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Middle"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="High"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton13"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Very High"
+                    android:textSize="12dp" />
+
+            </RadioGroup>
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text=" ＃  LED Brightness  "
+                android:textColor="#999"
+                android:textSize="16dp"
+                android:textStyle="bold" />
+
+            <SeekBar
+                android:id="@+id/seekBar2"
+                style="@style/Widget.AppCompat.SeekBar.Discrete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="22dp"
+                android:max="5"
+                android:progress="3" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/lastset"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="Last Setting Time :"
-            android:textSize="18dp" />
-
-        <TextView
-            android:id="@+id/textView17"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:text=" ＃  Fan Speed  "
-            android:textColor="#999"
-            android:textSize="16dp"
-            android:textStyle="bold" />
-
-        <RadioGroup
-            android:id="@+id/rg3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioButton9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Very Low"
-                android:textSize="12dp" />
-
-            <RadioButton
-                android:id="@+id/radioButton10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Low"
-                android:textSize="12dp" />
-
-            <RadioButton
-                android:id="@+id/radioButton11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Middle"
-                android:textSize="12dp" />
-
-            <RadioButton
-                android:id="@+id/radioButton12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="High"
-                android:textSize="12dp" />
-
-            <RadioButton
-                android:id="@+id/radioButton13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Very High"
-                android:textSize="12dp" />
-
-        </RadioGroup>
-
-        <TextView
-            android:id="@+id/textView25"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:text=" ＃  LED Brightness  "
-            android:textColor="#999"
-            android:textSize="16dp"
-            android:textStyle="bold" />
-
-        <SeekBar
-            android:id="@+id/seekBar2"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="22dp"
-            android:max="5"
-            android:progress="3" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/bt_type1"
-        android:backgroundTint="#555"
-        android:padding="3dp"
-        android:text="  Sleep Setting  "
-        android:textColor="#fff"
-        android:textSize="17dp" />
-
-    <LinearLayout
-        android:background="@drawable/bt_type1"
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/textView20"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
-            android:text=" ＃  Fan Speed  "
-            android:textColor="#999"
-            android:textStyle="bold"
-            android:textSize="16dp" />
-
-        <RadioGroup
-            android:id="@+id/rg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/radioButton1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Very Low"
-                android:textSize="12dp" />
-
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Low"
-                android:textSize="12dp" />
-
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Middle"
-                android:textSize="12dp" />
-
-            <RadioButton
-                android:id="@+id/radioButton4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="High"
-                android:textSize="12dp" />
-
-            <RadioButton
-                android:id="@+id/radioButton8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Very High"
-                android:textSize="12dp" />
-
-        </RadioGroup>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/bt_type1"
+            android:backgroundTint="#555"
             android:padding="3dp"
-            android:text=" ＃  CO2 concentration  "
-            android:textColor="#999"
-            android:textStyle="bold"
-            android:textSize="16dp" />
+            android:text="  Sleep Setting  "
+            android:textColor="#fff"
+            android:textSize="17dp" />
 
-        <RadioGroup
-            android:id="@+id/rg2"
+        <LinearLayout
+            android:background="@drawable/bt_type1"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="33dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="15dp"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/radioButton5"
+            <TextView
+                android:id="@+id/textView14"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Low"
-                android:textSize="12dp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:text=" ＃  Fan Speed  "
+                android:textColor="#999"
+                android:textStyle="bold"
+                android:textSize="16dp" />
 
-            <RadioButton
-                android:id="@+id/radioButton6"
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Very Low"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Low"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Middle"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="High"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Very High"
+                    android:textSize="12dp" />
+
+            </RadioGroup>
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Middle"
-                android:textSize="12dp" />
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
+                android:padding="3dp"
+                android:text=" ＃  CO2 concentration  "
+                android:textColor="#999"
+                android:textStyle="bold"
+                android:textSize="16dp" />
 
-            <RadioButton
-                android:id="@+id/radioButton7"
-                android:layout_width="wrap_content"
+            <RadioGroup
+                android:id="@+id/rg2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="High"
-                android:textSize="12dp" />
+                android:layout_marginLeft="33dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
 
-        </RadioGroup>
+                <RadioButton
+                    android:id="@+id/radioButton5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Low"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Middle"
+                    android:textSize="12dp" />
+
+                <RadioButton
+                    android:id="@+id/radioButton7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="High"
+                    android:textSize="12dp" />
+
+            </RadioGroup>
+        </LinearLayout>
+
     </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
