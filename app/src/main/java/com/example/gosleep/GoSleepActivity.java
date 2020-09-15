@@ -181,6 +181,8 @@ public class GoSleepActivity extends AppCompatActivity {
                         }
                         editor.commit();
                     }
+                    else if(array[0].equals("r"))         // 아두이노로부터 인터넷시간 동기화 실패 재전송 요청시
+                        bt.send(generatePacket(),true);
                     else {
                         hum = array[0].concat(" %");
                         tem = array[1].concat("°C");
@@ -230,31 +232,7 @@ public class GoSleepActivity extends AppCompatActivity {
                 Log.d("dddd","Activity: onDeviceConnected");
                 startService(goSleepIntent);     // 포그라운드 서비스 시작.
 
-                //T1605091300002 (2016년 5월 9일 13시 00분 00초 월요일)
-                //bt.send("T20")
-
-                long now = System.currentTimeMillis();
-                Date dateNow = new Date(now);
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
-                String syncTime = dateFormat.format(dateNow);
-
-                Calendar cal = Calendar.getInstance() ;
-                cal.setTime(dateNow);
-                int dayNum = cal.get(Calendar.DAY_OF_WEEK);
-
-                //bt.send("r"+syncTime+""+dayNum,true);   // 제품 시간 동기화 (체크섬 전송필요)
-                bt.send("r",true);
-                //Log.d("dddd","r"+syncTime+""+dayNum);
-
-                // checksum 생성
-                String packet = "r2009101600243";
-                CRC32 checksum = new CRC32();
-                checksum.update(packet.getBytes());
-                byte[] bytepacket = packet.getBytes();
-                byte[] csum = ByteBuffer.allocate(8).putLong(checksum.getValue()).array();
-                ByteBuffer bf = ByteBuffer.wrap(bytepacket).put(csum);
-                //bt.send(bf.array(),true);
+                bt.send(generatePacket(),true);
 
                 progressDialog.dismiss();
                 task_doing = false;
@@ -503,6 +481,7 @@ public class GoSleepActivity extends AppCompatActivity {
                                     try {
                                         Thread.sleep(2000);
                                     } catch (Exception e) { }
+                                    bt.send(generatePacket(),true);
                                     break;
                                 }
                             }
@@ -559,6 +538,31 @@ public class GoSleepActivity extends AppCompatActivity {
         });
 
         dlg.show();
+    }
+
+    public byte[] generatePacket(){
+        long now = System.currentTimeMillis();
+        Date dateNow = new Date(now);
+
+        // checksum 생성
+        byte checksum = 0;
+        checksum += (dateNow.getYear()-100)/10;
+        checksum += (dateNow.getYear()-100)%10;
+        checksum += (dateNow.getMonth()+1)/10;
+        checksum += (dateNow.getMonth()+1)%10;
+        checksum += dateNow.getDate()/10;
+        checksum += dateNow.getDate()%10;
+        checksum += dateNow.getHours()/10;
+        checksum += dateNow.getHours()%10;
+        checksum += dateNow.getMinutes()/10;
+        checksum += dateNow.getMinutes()%10;
+        checksum += dateNow.getSeconds()/10;
+        checksum += dateNow.getSeconds()%10;
+
+        // byte packet 길이제한 11? 까지인듯
+        byte[] packet = {'r', (byte)(dateNow.getYear()-100), (byte)(dateNow.getMonth()+1), (byte)dateNow.getDate(),
+                (byte)dateNow.getHours(), (byte)dateNow.getMinutes(), (byte)dateNow.getSeconds(),checksum};
+        return packet;
     }
 
     // Network

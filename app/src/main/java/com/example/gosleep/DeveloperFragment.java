@@ -130,23 +130,26 @@ public class DeveloperFragment extends Fragment {
             @Override
             public void handleMessage(@NonNull Message msg) {
                 if (msg.what == 0) {
-                    fanSpeed.setText(((GoSleepActivity) getActivity()).fanspeed);
-                    co2.setText(((GoSleepActivity) getActivity()).co2);
-                    distance.setText(((GoSleepActivity) getActivity()).dist);
-                    illuminance.setText(((GoSleepActivity) getActivity()).cds);
-                    ttt++;
-                    if (ttt > 5) { // ui 반영 주기
-                        ttt = 0;
-                        if (((GoSleepActivity) getActivity()).fanOn) fanSwit.setChecked(true);
-                        else fanSwit.setChecked(false);
+                    try {
+                        fanSpeed.setText(((GoSleepActivity) getActivity()).fanspeed);
+                        co2.setText(((GoSleepActivity) getActivity()).co2);
+                        distance.setText(((GoSleepActivity) getActivity()).dist);
+                        illuminance.setText(((GoSleepActivity) getActivity()).cds);
+                        ttt++;
+                        if (ttt > 5) { // ui 반영 주기
+                            ttt = 0;
+                            if (((GoSleepActivity) getActivity()).fanOn) fanSwit.setChecked(true);
+                            else fanSwit.setChecked(false);
 
-                        if (((GoSleepActivity) getActivity()).heatOn) heatSwit.setChecked(true);
-                        else heatSwit.setChecked(false);
+                            if (((GoSleepActivity) getActivity()).heatOn) heatSwit.setChecked(true);
+                            else heatSwit.setChecked(false);
 
-                        if (((GoSleepActivity) getActivity()).velveOn)
-                            velveSwit.setChecked(true);
-                        else velveSwit.setChecked(false);
+                            if (((GoSleepActivity) getActivity()).velveOn)
+                                velveSwit.setChecked(true);
+                            else velveSwit.setChecked(false);
+                        }
                     }
+                    catch(Exception e){}
                 }
             }
         };

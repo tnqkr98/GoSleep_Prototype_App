@@ -62,7 +62,7 @@ public class FCMService extends FirebaseMessagingService {
                     .setContentTitle(messageTitle)
                     .setContentText(messageBody)
                     .setAutoCancel(true)
-                    .setSound(defaultSoundUri)
+                    .setSound(defaultSoundUri)`
                     .setContentIntent(pendingIntent);
 
             NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
