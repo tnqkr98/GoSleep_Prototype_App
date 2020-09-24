@@ -59,7 +59,8 @@ public class SettingFragment extends Fragment {
         lastSetTime = (TextView)view.findViewById(R.id.lastset);
         lastSetTime.setText(pref.getString("savedAlarm","Last Set Time : None"));
 
-        eHour = (EditText)view.findViewById(R.id.hour);        eMin = (EditText)view.findViewById(R.id.min);
+        eHour = (EditText)view.findViewById(R.id.hour);
+        eMin = (EditText)view.findViewById(R.id.min);
         //eDay = (EditText)view.findViewById(R.id.day);
         //eMonth = (EditText)view.findViewById(R.id.month);
 
@@ -68,19 +69,19 @@ public class SettingFragment extends Fragment {
             public void onClick(View view) {
                     switch(view.getId()){
                         case R.id.radioButton1:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 80, true);
-                            break;
-                        case R.id.radioButton2:
                             ((GoSleepActivity) getActivity()).bt.send("fs" + 90, true);
                             break;
+                        case R.id.radioButton2:
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 103, true);
+                            break;
                         case R.id.radioButton3:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 100, true);
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 115, true);
                             break;
                         case R.id.radioButton4:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 110, true);
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 128, true);
                             break;
                         case R.id.radioButton8:
-                            ((GoSleepActivity) getActivity()).bt.send("fs" + 120, true);  // 4.5v  약
+                            ((GoSleepActivity) getActivity()).bt.send("fs" + 140, true);  // 4.5v  약
                             break;
                     }
             }
