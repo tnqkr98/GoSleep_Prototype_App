@@ -375,8 +375,9 @@
         android:id="@+id/tx_gosleeptime"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="제품 시간 : " />
+        android:text="제품 시간 : 12 : 03" />
 </LinearLayout>
 </ScrollView>

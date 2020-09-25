@@ -76,7 +76,8 @@ public class GoSleepActivity extends AppCompatActivity {
     MyBroadcastReceiver receiver;
 
     public int current_mode = 2;
-    public String tem = "0 °C", hum = "0 %", illum = "000 lux", co2 = "000 ppm", dist = "00 cm", fanspeed = "000", cds="0 lux";
+    public String tem = "0 °C", hum = "0 %", co2 = "000 ppm", dist = "00 cm", fanspeed = "000", cds="0 lux";
+    public String gosleepTime = "00:00";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
 
     public boolean velveOn = false, heatOn = false, fanOn = false, moodLEDon = false;
@@ -196,6 +197,12 @@ public class GoSleepActivity extends AppCompatActivity {
                         else fanOn = false;
                         if (array[8].equals("1")) velveOn = true;
                         else velveOn = false;
+
+                        try {
+                            gosleepTime = "제품 시간 : " + array[9] + ":" + array[10];
+                        }catch (Exception e){
+                            gosleepTime = "제품 시간 : 오류발생";
+                        }
 
                         // 쓰레드 없이 프레그먼트 조작
                         MoodFragment mf = (MoodFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":" + 1);

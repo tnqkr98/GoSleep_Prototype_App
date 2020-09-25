@@ -24,7 +24,7 @@ public class DeveloperFragment extends Fragment {
     Switch velveSwit,fanSwit,heatSwit;
     Button fanButton,zpButton,bt_valveset,fanONOFF,valveONOFF;
     EditText eFan,et_valveinput;
-    TextView fanSpeed, distance, co2, illuminance;
+    TextView fanSpeed, distance, co2, illuminance,tx_gosleeptime;
 
     private static Handler mHandler;
     ArduinoThread thread;
@@ -125,6 +125,8 @@ public class DeveloperFragment extends Fragment {
             }
         });
 
+        tx_gosleeptime = (TextView)view.findViewById(R.id.tx_gosleeptime);
+
 
         mHandler = new Handler(){
             @Override
@@ -135,7 +137,9 @@ public class DeveloperFragment extends Fragment {
                         co2.setText(((GoSleepActivity) getActivity()).co2);
                         distance.setText(((GoSleepActivity) getActivity()).dist);
                         illuminance.setText(((GoSleepActivity) getActivity()).cds);
+                        tx_gosleeptime.setText(((GoSleepActivity)getActivity()).gosleepTime);
                         ttt++;
+
                         if (ttt > 5) { // ui 반영 주기
                             ttt = 0;
                             if (((GoSleepActivity) getActivity()).fanOn) fanSwit.setChecked(true);
