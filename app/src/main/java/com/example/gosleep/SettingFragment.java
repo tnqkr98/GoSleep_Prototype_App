@@ -29,7 +29,7 @@ import static android.content.Context.MODE_PRIVATE;
 public class SettingFragment extends Fragment {
     View view;
     Button setButton, resetButton;
-    RadioButton r2,r3,r4;   // fan
+    RadioButton r1,r2,r3,r4,r8;   // fan
     RadioButton r5,r6,r7;   // co2
     TextView lastSetTime;
 
@@ -105,6 +105,12 @@ public class SettingFragment extends Fragment {
 
         r7= (RadioButton)view.findViewById(R.id.radioButton7);
         r7.setOnClickListener(radioButtonClickListener);
+
+        r1= (RadioButton)view.findViewById(R.id.radioButton1);
+        r1.setOnClickListener(radioButtonClickListener);
+
+        r8= (RadioButton)view.findViewById(R.id.radioButton8);
+        r8.setOnClickListener(radioButtonClickListener);
 
         long now = System.currentTimeMillis();
         dateFormat = new SimpleDateFormat("yyyyMMddHHmm");

@@ -41,7 +41,7 @@ public class DeveloperFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_developer, container, false);
         eFan = (EditText)view.findViewById(R.id.fan_speed);
-        eFan.setText("100");
+        eFan.setText("115");
 
         fanSpeed = (TextView)view.findViewById(R.id.fanspeedtxt);
         distance = (TextView)view.findViewById(R.id.txt_dist);
