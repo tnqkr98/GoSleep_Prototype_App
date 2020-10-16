@@ -1,5 +1,6 @@
 package com.example.gosleep;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import app.akexorcist.bluetotohspp.library.BluetoothSPP;
 import app.akexorcist.bluetotohspp.library.BluetoothState;
@@ -50,22 +52,73 @@ public class DashBoardFragment extends Fragment {
         mHandler = new Handler(){
             @Override
             public void handleMessage(@NonNull Message msg) {
-                try {
-                    if (msg.what == 0) {
-                        tem.setText(((GoSleepActivity) getActivity()).tem);
-                        hum.setText(((GoSleepActivity) getActivity()).hum);
-                        co2.setText(((GoSleepActivity)getActivity()).co2);
-                        tx_cds.setText(((GoSleepActivity)getActivity()).cds);
+                if (msg.what == 0) {
+                    tem.setText(((GoSleepActivity) getActivity()).tem);
+                    hum.setText(((GoSleepActivity) getActivity()).hum);
+                    co2.setText(((GoSleepActivity)getActivity()).co2);
+                    tx_cds.setText(((GoSleepActivity)getActivity()).cds);
 
-                        switch (((GoSleepActivity) getActivity()).current_mode){
-                            case 2: mode.setText("Current Mode : Waiting Mode");break;
-                            case 3: mode.setText("Current Mode : Distance Mode");break;
-                            case 4: mode.setText("Current Mode : Sleep Mode");break;
-                            case 5: mode.setText("Current Mode : Sensing Mode");break;
-                            case 6: mode.setText("Current Mode : Wake Mode");break;
-                        }
-                     }
-                }catch (Exception e){}
+                    switch (((GoSleepActivity) getActivity()).current_mode){
+                        case 2:
+                            back.setText("");
+                            back.setBackgroundResource(R.drawable.bt_type_gray);
+                            next.setText("Sleep");
+                            next.setBackgroundResource(R.drawable.bt_type_blue);
+                            mode.setText("Current Mode : Waiting Mode");
+                            mode.setTextColor(Color.WHITE);
+                            break;
+                        case 3:
+                            back.setText("Stop");
+                            back.setBackgroundResource(R.drawable.bt_type_red);
+                            next.setText("");
+                            next.setBackgroundResource(R.drawable.bt_type_gray);
+                            mode.setText("Current Mode : Distance Mode");
+                            mode.setTextColor(Color.WHITE);
+                            break;
+                        case 4:
+                            back.setText("Stop");
+                            back.setBackgroundResource(R.drawable.bt_type_red);
+                            next.setText("Pause");
+                            next.setBackgroundResource(R.drawable.bt_type_blue);
+                            mode.setText("Current Mode : Sleep Mode");
+                            mode.setTextColor(Color.WHITE);
+                            break;
+                        case 5:
+                            if(((GoSleepActivity) getActivity()).past_mode ==4
+                            && ((GoSleepActivity) getActivity()).current_mode ==5) {
+                                back.setText("");
+                                back.setBackgroundResource(R.drawable.bt_type_gray);
+                                next.setText("Wake Up");
+                                next.setBackgroundResource(R.drawable.bt_type_blue);
+                                mode.setText("Current Mode : Sensing Mode");
+                                mode.setTextColor(Color.WHITE);
+                            }
+                            break;
+                        case 6:
+                            if(((GoSleepActivity) getActivity()).past_mode ==5
+                                    && ((GoSleepActivity) getActivity()).current_mode ==6) {
+                                back.setText("");
+                                back.setBackgroundResource(R.drawable.bt_type_gray);
+                                next.setText("Stop Alarm");
+                                next.setBackgroundResource(R.drawable.bt_type_blue);
+                                mode.setText("Current Mode : Wake Mode");
+                                mode.setTextColor(Color.WHITE);
+                            }
+                            break;
+                        case 8:
+                            back.setText("");
+                            back.setBackgroundResource(R.drawable.bt_type_gray);
+                            next.setText("Restart");
+                            next.setBackgroundResource(R.drawable.bt_type_blue);
+                            mode.setTextColor(Color.GREEN);
+                            mode.setText("Current Mode : Pause");
+                            break;
+                        case 9:
+                            mode.setTextColor(Color.RED);
+                            mode.setText("Current Mode : Emergency");
+                            break;
+                    }
+                 }
             }
         };
 

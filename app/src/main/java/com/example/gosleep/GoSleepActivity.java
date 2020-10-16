@@ -113,7 +113,7 @@ public class GoSleepActivity extends AppCompatActivity {
 
     // network
     private NetworkAPI service;
-    private int past_mode = 2;
+    public int past_mode = 2;
     private String product_id = "NYX-";
     private String regId;
 
@@ -228,7 +228,7 @@ public class GoSleepActivity extends AppCompatActivity {
                         //Log.d("dddd", "분석 >> 습도 : " + hum + " 온도 :" + tem + "  팬 속도 : " + fanspeed + "  현재 고슬립 모드 :" + current_mode);
                     }
                 }catch (Exception e){
-                    Log.d("dddd",e.getMessage()+"아두이노 수신메시지 오류!!");
+                    Log.d("dddd",e.getMessage()+" 아두이노 수신메시지 오류!!");
                 }
             }
         });
@@ -302,7 +302,7 @@ public class GoSleepActivity extends AppCompatActivity {
                         progress_text.setText(" . .");
                     else if (loading_num == 3)
                         progress_text.setText(" . . .");
-                    if (loading_num++ == 3) loading_num = 0;
+                    if (loading_num++ == 2) loading_num = 0;
                 }
             }
         };
@@ -579,12 +579,12 @@ public class GoSleepActivity extends AppCompatActivity {
             public void onResponse(Call<ResData> call, Response<ResData> response) {
                 ResData result = response.body();
                 //textView.setText(result.getBottle_id());
-                Toast.makeText(GoSleepActivity.this,"Server Msg : "+result.getCode(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GoSleepActivity.this,"Server Msg : "+result.getCode(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<ResData> call, Throwable t) {
-                Toast.makeText(GoSleepActivity.this, "Server Msg : Client Error", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(GoSleepActivity.this, "Server Msg : Client Error", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });

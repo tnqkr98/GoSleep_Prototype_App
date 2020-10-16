@@ -81,7 +81,7 @@
                         android:id="@+id/setbt"
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/bt_type2"
+                        android:background="@drawable/bt_type_red"
                         android:backgroundTint="#090"
                         android:text="Set" />
 
@@ -90,8 +90,7 @@
                         android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:background="@drawable/bt_type2"
-                        android:backgroundTint="#900"
+                        android:background="@drawable/bt_type_red"
                         android:text="Unset" />
 
                 </LinearLayout>

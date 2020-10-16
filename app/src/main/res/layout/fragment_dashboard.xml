@@ -226,9 +226,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/bt_type2"
-                android:backgroundTint="#f00"
-                android:text="Back" />
+                android:gravity="center"
+                android:background="@drawable/bt_type_gray"
+                android:text="" />
 
             <Button
                 android:id="@+id/nextbt"
@@ -236,13 +236,13 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/bt_type2"
-                android:backgroundTint="#00f"
-                android:text="Next" />
+                android:gravity="center"
+                android:background="@drawable/bt_type_gray" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/mode_txt"
+            android:textColor="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"

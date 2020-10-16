@@ -24,8 +24,7 @@ import androidx.fragment.app.Fragment;
 
 public class MoodFragment extends Fragment {
     View view;
-
-    Switch lightonoff;
+    public Switch lightonoff;
     SeekBar brightness;
     ColorPicker picker;
 
@@ -38,6 +37,7 @@ public class MoodFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_mood, container, false);
+        lightonoff = (Switch)view.findViewById(R.id.switch1);
 
         picker = (ColorPicker)view.findViewById(R.id.picker);
         SVBar svBar = (SVBar) view.findViewById(R.id.svbar);
@@ -57,7 +57,6 @@ public class MoodFragment extends Fragment {
             }
         });
 
-        lightonoff = (Switch)view.findViewById(R.id.switch1);
         brightness = (SeekBar)view.findViewById(R.id.seekBar);
         brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

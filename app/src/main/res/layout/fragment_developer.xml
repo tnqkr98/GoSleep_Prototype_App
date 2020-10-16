@@ -34,7 +34,7 @@
             android:gravity="bottom|right"
             android:layout_marginRight="20dp"
             android:layout_weight="1"
-            android:text="Application Version  :  v200925" />
+            android:text="Application Version  :  v201016" />
     </LinearLayout>
 
     <LinearLayout
@@ -105,7 +105,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/bt_type2"
+                android:background="@drawable/bt_type_gray"
                 android:backgroundTint="#333"
                 android:text="Set" />
 
@@ -199,7 +199,7 @@
                 android:layout_marginLeft="40dp"
                 android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bt_type2"
+                android:background="@drawable/bt_type_gray"
                 android:backgroundTint="#333"
                 android:text="Set" />
 
@@ -336,7 +336,7 @@
                 android:layout_height="40dp"
                 android:layout_gravity="right|center_vertical"
                 android:layout_weight="0"
-                android:background="@drawable/bt_type2"
+                android:background="@drawable/bt_type_gray"
                 android:backgroundTint="#333"
                 android:text="ZP" />
 
