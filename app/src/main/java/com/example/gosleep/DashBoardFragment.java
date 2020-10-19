@@ -84,26 +84,20 @@ public class DashBoardFragment extends Fragment {
                             mode.setTextColor(Color.WHITE);
                             break;
                         case 5:
-                            if(((GoSleepActivity) getActivity()).past_mode ==4
-                            && ((GoSleepActivity) getActivity()).current_mode ==5) {
-                                back.setText("");
-                                back.setBackgroundResource(R.drawable.bt_type_gray);
-                                next.setText("Wake Up");
-                                next.setBackgroundResource(R.drawable.bt_type_blue);
-                                mode.setText("Current Mode : Sensing Mode");
-                                mode.setTextColor(Color.WHITE);
-                            }
+                            back.setText("");
+                            back.setBackgroundResource(R.drawable.bt_type_gray);
+                            next.setText("Wake Up");
+                            next.setBackgroundResource(R.drawable.bt_type_blue);
+                            mode.setText("Current Mode : Sensing Mode");
+                            mode.setTextColor(Color.WHITE);
                             break;
                         case 6:
-                            if(((GoSleepActivity) getActivity()).past_mode ==5
-                                    && ((GoSleepActivity) getActivity()).current_mode ==6) {
-                                back.setText("");
-                                back.setBackgroundResource(R.drawable.bt_type_gray);
-                                next.setText("Stop Alarm");
-                                next.setBackgroundResource(R.drawable.bt_type_blue);
-                                mode.setText("Current Mode : Wake Mode");
-                                mode.setTextColor(Color.WHITE);
-                            }
+                            back.setText("");
+                            back.setBackgroundResource(R.drawable.bt_type_gray);
+                            next.setText("Stop Alarm");
+                            next.setBackgroundResource(R.drawable.bt_type_blue);
+                            mode.setText("Current Mode : Wake Mode");
+                            mode.setTextColor(Color.WHITE);
                             break;
                         case 8:
                             back.setText("");
@@ -115,7 +109,7 @@ public class DashBoardFragment extends Fragment {
                             break;
                         case 9:
                             mode.setTextColor(Color.RED);
-                            mode.setText("Current Mode : Emergency");
+                            mode.setText("Current Mode : Emergency" );
                             break;
                     }
                  }
