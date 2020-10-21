@@ -117,6 +117,10 @@ public class GoSleepActivity extends AppCompatActivity {
     private String product_id = "NYX-";
     private String regId;
 
+    // DevClick
+    private int clickCount = 0;
+    private boolean devIsOn = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +134,7 @@ public class GoSleepActivity extends AppCompatActivity {
         viewPager = (ViewPager)findViewById(R.id.viewpager);
         navigation = (BottomNavigationView)findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavi);
+        navigation.getMenu().getItem(3).setVisible(false);
 
         adapter = new GoSleepViewPagerAdapter(getSupportFragmentManager());
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -545,6 +550,21 @@ public class GoSleepActivity extends AppCompatActivity {
         });
 
         dlg.show();
+    }
+
+    public void onDevClick(View view){
+        clickCount++;
+        if(clickCount == 5 && !devIsOn) {
+            devIsOn = true;
+            Toast.makeText(getApplicationContext(), "Dev Mode Activated", Toast.LENGTH_LONG);
+            navigation.getMenu().getItem(3).setVisible(true);
+            clickCount = 0;
+        }else if(clickCount == 5 && devIsOn){
+            devIsOn = false;
+            Toast.makeText(getApplicationContext(), "Dev Mode Deactivated", Toast.LENGTH_LONG);
+            navigation.getMenu().getItem(3).setVisible(false);
+            clickCount = 0;
+        }
     }
 
     public byte[] generatePacket(){

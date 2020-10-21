@@ -16,6 +16,7 @@
         android:textStyle="bold"
         android:textSize="20dp"
         android:textColor="#fff"
+        android:onClick="onDevClick"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
