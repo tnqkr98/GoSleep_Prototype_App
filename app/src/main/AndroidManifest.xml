@@ -18,9 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".GoSleepSplashActivity"></activity>
         <activity android:name=".QuestionBeforeSleepActivity" />
-
 
         <service
             android:name=".FCMService"
@@ -29,7 +28,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".GoSleepService"
             android:enabled="true"
@@ -38,6 +36,7 @@
         <activity android:name=".GoSleepActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

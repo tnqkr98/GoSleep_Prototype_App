@@ -30,8 +30,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -83,7 +85,7 @@ public class GoSleepActivity extends AppCompatActivity {
     public boolean velveOn = false, heatOn = false, fanOn = false, moodLEDon = false;
 
     private BottomNavigationView navigation;
-    private ViewPager viewPager;
+    private CViewPager viewPager;
     private GoSleepViewPagerAdapter adapter;
     private MenuItem prevMenuItem;
 
@@ -131,7 +133,7 @@ public class GoSleepActivity extends AppCompatActivity {
         editor = pref.edit();
 
         //navigation view
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        viewPager = (CViewPager)findViewById(R.id.viewpager);
         navigation = (BottomNavigationView)findViewById(R.id.bottomNavigationView);
         navigation.setOnNavigationItemSelectedListener(mOnNavi);
         navigation.getMenu().getItem(3).setVisible(false);
@@ -143,8 +145,10 @@ public class GoSleepActivity extends AppCompatActivity {
         adapter.AddFragment(new MoodFragment(),"mood");
         adapter.AddFragment(new SettingFragment(),"setting");
         adapter.AddFragment(new DeveloperFragment(),"develop");
+
         fragmentTransaction.commit();
         viewPager.setAdapter(adapter);
+        viewPager.setEnable(false);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }

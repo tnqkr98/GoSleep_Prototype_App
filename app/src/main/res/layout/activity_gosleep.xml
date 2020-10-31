@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.viewpager.widget.ViewPager
+    <com.example.gosleep.CViewPager
         android:id="@+id/viewpager"
         android:layout_width="0dp"
         android:layout_height="0dp"
