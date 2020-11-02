@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ public class SettingFragment extends Fragment {
     RadioButton r1,r2,r3,r4,r8;   // fan
     RadioButton r5,r6,r7;   // co2
     TextView lastSetTime;
+    SeekBar seekBar;
 
     boolean badInput = false;
 
@@ -87,30 +89,43 @@ public class SettingFragment extends Fragment {
             }
         };
 
+        seekBar = (SeekBar)view.findViewById(R.id.seekBar2);
+        seekBar.setEnabled(false);
+        seekBar.setClickable(false);
+
         r3 = (RadioButton)view.findViewById(R.id.radioButton3);
         r3.setOnClickListener(radioButtonClickListener);
         r3.setChecked(true);
+        r3.setClickable(false);
 
         r2 = (RadioButton)view.findViewById(R.id.radioButton2);
         r2.setOnClickListener(radioButtonClickListener);
+        r2.setClickable(false);
+
         r4 = (RadioButton)view.findViewById(R.id.radioButton4);
         r4.setOnClickListener(radioButtonClickListener);
+        r4.setClickable(false);
 
         r5= (RadioButton)view.findViewById(R.id.radioButton5);
         r5.setOnClickListener(radioButtonClickListener);
+        r5.setClickable(false);
 
         r6= (RadioButton)view.findViewById(R.id.radioButton6);
         r6.setOnClickListener(radioButtonClickListener);
         r6.setChecked(true);
+        r6.setClickable(false);
 
         r7= (RadioButton)view.findViewById(R.id.radioButton7);
         r7.setOnClickListener(radioButtonClickListener);
+        r7.setClickable(false);
 
         r1= (RadioButton)view.findViewById(R.id.radioButton1);
         r1.setOnClickListener(radioButtonClickListener);
+        r1.setClickable(false);
 
         r8= (RadioButton)view.findViewById(R.id.radioButton8);
         r8.setOnClickListener(radioButtonClickListener);
+        r8.setClickable(false);
 
         long now = System.currentTimeMillis();
         dateFormat = new SimpleDateFormat("yyyyMMddHHmm");
