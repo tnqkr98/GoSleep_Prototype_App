@@ -163,6 +163,11 @@ public class SettingFragment extends Fragment {
                     else
                         mMin = min + "";
 
+                    if(((GoSleepActivity)getActivity()).current_mode >= 4){
+                        Toast.makeText(view.getContext(), "수면 모드 동작 중에는 알람 시간을 변경할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     if (!badInput) {
                         ((GoSleepActivity) getActivity()).bt.send("t" + mHour + mMin, true);
                         Log.d("dddd", "Sending..: " + mHour + mMin);
