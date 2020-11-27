@@ -81,6 +81,7 @@ public class GoSleepActivity extends AppCompatActivity {
     public String tem = "0 °C", hum = "0 %", co2 = "000 ppm", dist = "00 cm", fanspeed = "000", cds="0 lux";
     public String gosleepTime = "00:00";
     public boolean arduinoDataRecievOn = false, completeSetAlram = false;  // 이게 true 여야 모드4로 이동가능.
+    public int monitoringTime = 0, epoch=1;
 
     public boolean velveOn = false, heatOn = false, fanOn = false, moodLEDon = false;
 
@@ -235,6 +236,16 @@ public class GoSleepActivity extends AppCompatActivity {
                         }
                         past_mode = current_mode;
                         //Log.d("dddd", "분석 >> 습도 : " + hum + " 온도 :" + tem + "  팬 속도 : " + fanspeed + "  현재 고슬립 모드 :" + current_mode);
+
+                        if(current_mode == 4 || current_mode == 9 || current_mode == 8){   // 수면모드 Co2 모니터링
+                            monitoringTime++;
+                            if(monitoringTime%30==0){
+                                monitoringTime = 0;
+                                // POST request
+                                startRequestCo2(new NetworkMonitorData.ReqDataCo2(product_id, epoch++, Integer.parseInt(array[4])));
+                            }
+                        }else if(current_mode == 2) epoch=0;
+
                     }
                 }catch (Exception e){
                     Log.d("dddd",e.getMessage()+" 아두이노 수신메시지 오류!!");
@@ -600,15 +611,20 @@ public class GoSleepActivity extends AppCompatActivity {
     private void startRequest(ReqData data){
         service.callData(data).enqueue(new Callback<ResData>() {
             @Override
-            public void onResponse(Call<ResData> call, Response<ResData> response) {
-                ResData result = response.body();
-                //textView.setText(result.getBottle_id());
-                //Toast.makeText(GoSleepActivity.this,"Server Msg : "+result.getCode(), Toast.LENGTH_SHORT).show();
-            }
-
+            public void onResponse(Call<ResData> call, Response<ResData> response) { ResData result = response.body(); }
             @Override
-            public void onFailure(Call<ResData> call, Throwable t) {
-                //Toast.makeText(GoSleepActivity.this, "Server Msg : Client Error", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ResData> call, Throwable t) { t.printStackTrace(); }
+        });
+    }
+
+    private void startRequestCo2(NetworkMonitorData.ReqDataCo2 data){
+        service.callData2(data).enqueue(new Callback<NetworkMonitorData.ResDataCo2>() {
+            @Override
+            public void onResponse(Call<NetworkMonitorData.ResDataCo2> call, Response<NetworkMonitorData.ResDataCo2> response) {
+                NetworkMonitorData.ResDataCo2 result = response.body();
+            }
+            @Override
+            public void onFailure(Call<NetworkMonitorData.ResDataCo2> call, Throwable t) {
                 t.printStackTrace();
             }
         });
