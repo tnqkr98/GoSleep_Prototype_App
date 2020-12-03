@@ -237,7 +237,7 @@ public class GoSleepActivity extends AppCompatActivity {
                         past_mode = current_mode;
                         //Log.d("dddd", "분석 >> 습도 : " + hum + " 온도 :" + tem + "  팬 속도 : " + fanspeed + "  현재 고슬립 모드 :" + current_mode);
 
-                        if(current_mode == 4 || current_mode == 9 || current_mode == 8){   // 수면모드 Co2 모니터링
+                        if(current_mode == 4 || current_mode == 9 || current_mode == 8){   // 수면모드 Co2 모니터링 ( 헤드 문제시, 일시정지 상태로 서버에 계속 기록되는 오류 있었음)
                             monitoringTime++;
                             if(monitoringTime%30==0){
                                 monitoringTime = 0;

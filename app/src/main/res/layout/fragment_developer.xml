@@ -35,7 +35,7 @@
             android:layout_marginRight="20dp"
             android:layout_weight="1"
             android:textColor="#00ff00"
-            android:text="Application Version  :  v201028" />
+            android:text="Application Version  :  v201203" />
     </LinearLayout>
 
     <LinearLayout
